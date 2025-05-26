@@ -12,11 +12,45 @@
             box-sizing: border-box;
         }
 
+        /* Dynamic Color Variables */
+        :root {
+            --primary-hue: 240;
+            --secondary-hue: 280;
+            --primary-color: hsl(var(--primary-hue), 70%, 60%);
+            --secondary-color: hsl(var(--secondary-hue), 65%, 65%);
+            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+        }
+
+        /* Color Animation */
+        @keyframes colorShift {
+            0% { 
+                --primary-hue: 240; 
+                --secondary-hue: 280; 
+            }
+            20% { 
+                --primary-hue: 220; 
+                --secondary-hue: 260; 
+            }
+            40% { 
+                --primary-hue: 200; 
+                --secondary-hue: 240; 
+            }
+            60% { 
+                --primary-hue: 260; 
+                --secondary-hue: 300; 
+            }
+            80% { 
+                --primary-hue: 280; 
+                --secondary-hue: 320; 
+            }
+            100% { 
+                --primary-hue: 240; 
+                --secondary-hue: 280; 
+            }
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            overflow-x: hidden;
+            animation: colorShift 15s ease-in-out infinite;
         }
 
         /* Background Slideshow */
@@ -81,7 +115,7 @@
         .logo {
             font-size: 1.8rem;
             font-weight: bold;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -102,7 +136,7 @@
         }
 
         .nav-links a:hover {
-            color: #667eea;
+            color: var(--primary-color);
             transform: translateY(-2px);
         }
 
@@ -113,7 +147,7 @@
             height: 2px;
             bottom: -5px;
             left: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             transition: all 0.3s ease;
         }
 
@@ -131,7 +165,7 @@
             text-align: center;
             color: white;
             position: relative;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%);
+            background: linear-gradient(135deg, hsla(var(--primary-hue), 70%, 60%, 0.8) 0%, hsla(var(--secondary-hue), 65%, 65%, 0.8) 100%);
         }
 
         .hero-content {
@@ -190,12 +224,12 @@
         }
 
         .cta-button.primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             border: none;
         }
 
         .cta-button.primary:hover {
-            background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+            background: linear-gradient(135deg, hsl(var(--primary-hue), 70%, 55%) 0%, hsl(var(--secondary-hue), 65%, 60%) 100%);
         }
 
         /* Sections */
@@ -214,7 +248,7 @@
             text-align: center;
             font-size: 3rem;
             margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -257,16 +291,210 @@
         }
 
         .highlight {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             font-weight: 600;
         }
 
-        /* Skills Section */
+        /* Collapsible Sections */
+        .collapsible-section {
+            margin: 2rem 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .collapsible-toggle {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: inherit;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .collapsible-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .toggle-icon {
+            font-size: 1.5rem;
+        }
+
+        .toggle-text {
+            flex: 1;
+            text-align: left;
+            color: var(--primary-color);
+        }
+
+        .toggle-arrow {
+            transition: transform 0.3s ease;
+            color: var(--primary-color);
+        }
+
+        .toggle-arrow.rotated {
+            transform: rotate(180deg);
+        }
+
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 2rem;
+        }
+
+        .collapsible-content.expanded {
+            max-height: 500px;
+            padding: 0 2rem 1.5rem 2rem;
+        }
+
+        .collapsible-content p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .collapsible-content ul li {
+            color: #555;
+            line-height: 1.6;
+        }
+        .experience {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+        }
+
+        .experience-timeline {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .experience-timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gradient-primary);
+        }
+
+        .experience-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            margin-left: 80px;
+            position: relative;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .experience-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .experience-card::before {
+            content: '';
+            position: absolute;
+            left: -65px;
+            top: 30px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .experience-company h3 {
+            color: #333;
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .experience-role {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .experience-duration {
+            color: #666;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .experience-content p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .experience-content ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .experience-content li {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 0.8rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .experience-content li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .experience-content .tech-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .experience-content .tech-tag {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
         .skills {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            background: linear-gradient(135deg, hsla(var(--primary-hue), 70%, 60%, 0.05) 0%, hsla(var(--secondary-hue), 65%, 65%, 0.05) 100%);
         }
 
         .skills-grid {
@@ -294,7 +522,7 @@
         .skill-category i {
             font-size: 3.5rem;
             margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -341,7 +569,7 @@
 
         .project-image {
             height: 200px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -385,7 +613,7 @@
         }
 
         .tech-tag {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             color: white;
             padding: 6px 12px;
             border-radius: 20px;
@@ -402,20 +630,20 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            color: #667eea;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
         }
 
         .project-links a:hover {
-            color: #764ba2;
+            color: var(--secondary-color);
             transform: translateY(-2px);
         }
 
         /* Blog Section */
         .blog {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            background: linear-gradient(135deg, hsla(var(--primary-hue), 70%, 60%, 0.05) 0%, hsla(var(--secondary-hue), 65%, 65%, 0.05) 100%);
         }
 
         .blog-grid {
@@ -440,7 +668,7 @@
         }
 
         .blog-date {
-            color: #667eea;
+            color: var(--primary-color);
             font-size: 0.9rem;
             margin-bottom: 1rem;
             font-weight: 500;
@@ -463,20 +691,20 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            color: #667eea;
+            color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
         }
 
         .read-more:hover {
-            color: #764ba2;
+            color: var(--secondary-color);
             transform: translateX(5px);
         }
 
         /* Resume Section */
         .resume-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             color: white;
             text-align: center;
             position: relative;
@@ -508,7 +736,7 @@
             align-items: center;
             gap: 0.5rem;
             background: rgba(255, 255, 255, 0.9);
-            color: #667eea;
+            color: var(--primary-color);
             padding: 18px 35px;
             border-radius: 50px;
             text-decoration: none;
@@ -557,7 +785,7 @@
         }
 
         .social-links a:hover {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--gradient-primary);
             transform: translateY(-5px) scale(1.1);
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
         }
@@ -619,6 +847,31 @@
             section {
                 padding: 4rem 0;
             }
+
+            /* Experience mobile styles */
+            .experience-timeline::before {
+                left: 15px;
+            }
+
+            .experience-card {
+                margin-left: 40px;
+                padding: 2rem 1.5rem;
+            }
+
+            .experience-card::before {
+                left: -28px;
+                width: 15px;
+                height: 15px;
+            }
+
+            .experience-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .experience-content .tech-tags {
+                justify-content: center;
+            }
         }
 
         /* Scroll animations */
@@ -647,6 +900,7 @@
             <div class="logo">Swastik Chowdhury</div>
             <ul class="nav-links">
                 <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#blog">Blog</a></li>
@@ -681,15 +935,131 @@
             <div class="section-subtitle">Passionate about building scalable data systems and deploying ML models in production</div>
             <div class="about-content">
                 <div class="about-text">
-                    <p>Hello! I'm a <span class="highlight">Data Engineer & Machine Learning Engineer</span> with 5+ years of experience leading large-scale data and AI initiatives. Currently pursuing my graduate studies at <span class="highlight">Carnegie Mellon University</span>, I'm passionate about building scalable data systems and deploying machine learning models in production.</p>
+                    <p>Over the past five years, I've had the opportunity to work at both a <span class="highlight">global tech consultancy (TCS)</span> and a <span class="highlight">fast-paced startup (Vertisage)</span>—experiences that shaped me into an adaptable, resourceful engineer. I learned how to tame distributed systems, optimize Spark pipelines, and lead a migration to EMR that ultimately saved over <span class="highlight">$1M in annual costs</span>.</p>
                     
-                    <p>I specialize in big data technologies, cloud platforms, and MLOps, with proven experience in cost optimization and real-time data processing. As a <span class="highlight">Graduate Teaching Assistant</span> for Machine Learning in Production/AI Engineering at CMU, I enjoy mentoring teams on deploying ML systems at scale.</p>
+                    <p>Still, I often found myself asking: <em>"What's the story behind the data? What decisions are we enabling?"</em> That curiosity led me to <span class="highlight">Carnegie Mellon University</span>, where I deepened my understanding of building scalable, production-level ML systems—bridging my past experience in data engineering with my aspirations in machine learning.</p>
                     
-                    <p>My expertise lies in designing robust data pipelines, optimizing Spark jobs, and ensuring data quality at scale. I firmly believe that <em>"while models are inherently uncertain, data can always be accurate"</em> - which drives my focus on efficient storage, scalability, and versioning of data.</p>
+                    <p>While I take pride in writing clean, scalable code, I've found my greatest strength lies in <span class="highlight">working closely with others to build great systems</span>. Collaboration has been a constant theme across my career and at CMU—whether through team projects or my roles as a Teaching Assistant for both <em>Machine Learning in Production/AI Engineering</em> and <em>Advanced Python</em>.</p>
+
+                    <!-- Key Achievements Collapsible Section -->
+                    <div class="collapsible-section">
+                        <button class="collapsible-toggle" onclick="toggleSection('achievements')">
+                            <span class="toggle-icon">🏆</span>
+                            <span class="toggle-text">Key Achievements</span>
+                            <i class="fas fa-chevron-down toggle-arrow" id="achievements-arrow"></i>
+                        </button>
+                        <div class="collapsible-content" id="achievements-content">
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="margin-bottom: 0.8rem;"><strong>💰 Cost Optimization:</strong> Led migration from Amazon Redshift to EMR using Apache Spark, saving $1M+ annually</li>
+                                <li style="margin-bottom: 0.8rem;"><strong>⚡ Real-Time Data Ingestion:</strong> Designed CDC pipelines with Debezium, Kafka, and Iceberg for scalable, real-time analytics</li>
+                                <li style="margin-bottom: 0.8rem;"><strong>🚀 Spark Optimization:</strong> Reduced Spark job costs by 15%+ through advanced resource allocation and workload analysis</li>
+                                <li style="margin-bottom: 0.8rem;"><strong>🤖 AI Product Development:</strong> Built a production-ready tool for document indexing using LlamaIndex and LLMs, streamlining support and knowledge sharing</li>
+                                <li style="margin-bottom: 0.8rem;"><strong>👨‍🏫 Teaching:</strong> Graduate Teaching Assistant for Machine Learning in Production/AI Engineering at CMU, mentoring teams on deploying ML systems in production</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- How I Can Contribute Collapsible Section -->
+                    <div class="collapsible-section">
+                        <button class="collapsible-toggle" onclick="toggleSection('contribute')">
+                            <span class="toggle-icon">💡</span>
+                            <span class="toggle-text">How I Can Immediately Contribute</span>
+                            <i class="fas fa-chevron-down toggle-arrow" id="contribute-arrow"></i>
+                        </button>
+                        <div class="collapsible-content" id="contribute-content">
+                            <p>In my previous roles, I developed and maintained large-scale data infrastructure using Spark, Hadoop, and Kafka—writing production-grade pipelines in Scala, Java, and Python. I led the major Redshift-to-EMR migration, implemented real-time ingestion pipelines using Kafka and Iceberg for seamless CDC, and integrated Delta Lake to support upserts and schema evolution across our data lake.</p>
+                            <p>At CMU, I've built a strong technical foundation across both ML and systems through courses like <em>Machine Learning in Production</em>, <em>Distributed Systems</em>, <em>Databases</em>, and <em>DevSecOps</em>—learning to think rigorously about scalability, latency, reliability, and fairness in ML applications. My goal is to become an engineer who can <span class="highlight">own the full pipeline—from data ingestion to model deployment and post-deployment monitoring</span>.</p>
+                        </div>
+                    </div>
                     
                     <p>📍 <strong>Location:</strong> Pittsburgh, PA, USA<br>
                     🚀 <strong>Status:</strong> Actively seeking full-time roles starting August 2025<br>
                     💼 <strong>Open to:</strong> Data Engineering, Machine Learning Engineering, and Software Engineering roles</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="experience fade-in">
+        <div class="container">
+            <h2 class="section-title">Professional Experience</h2>
+            <div class="section-subtitle">5+ years of hands-on experience in data engineering, machine learning, and system architecture</div>
+            
+            <div class="experience-timeline">
+                <div class="experience-card">
+                    <div class="experience-header">
+                        <div class="experience-company">
+                            <h3>Carnegie Mellon University</h3>
+                            <div class="experience-role">Graduate Teaching Assistant</div>
+                        </div>
+                        <div class="experience-duration">Jan 2025 - May 2025</div>
+                    </div>
+                    <div class="experience-content">
+                        <p><strong>Machine Learning in Production / AI Engineering (17645/11695):</strong> Teaching assistant for CMU course covering how to build, deploy, assure, and maintain applications with machine-learned models. Covers responsible AI (safety, security, fairness, explainability, transparency) and MLOps.</p>
+                        <p><strong>Advanced Python (90-819):</strong> Assisted students with Python homework and projects on web scraping and API integration, evaluated assignments for data engineering applications.</p>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">Kubernetes</span>
+                            <span class="tech-tag">Apache Kafka</span>
+                            <span class="tech-tag">MLflow</span>
+                            <span class="tech-tag">A/B Testing</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="experience-card">
+                    <div class="experience-header">
+                        <div class="experience-company">
+                            <h3>Vertisage Technologies</h3>
+                            <div class="experience-role">Senior Data Engineer</div>
+                        </div>
+                        <div class="experience-duration">Apr 2023 - Mar 2024</div>
+                    </div>
+                    <div class="experience-content">
+                        <ul>
+                            <li><strong>Cost Optimization Leadership:</strong> Headed a team of 3 to migrate Amazon Redshift procedures to Amazon EMR using Apache Spark, cutting costs by around $1 million annually</li>
+                            <li><strong>AI Product Development:</strong> Engineered an internal tool that evolved into a product for document indexing using LlamaIndex, leveraging LLMs to parse content and streamline knowledge transfer</li>
+                            <li><strong>Performance Optimization:</strong> Reduced Spark job execution time by ~25% through dataset analysis, partition tuning, and shuffle parameter optimization</li>
+                            <li><strong>Infrastructure & DevOps:</strong> Deployed infrastructure leveraging EMR on EKS and Airflow, established external tables in Snowflake, devised upsert capabilities with Delta Lake</li>
+                            <li><strong>Real-time Systems:</strong> Engineered real-time database replication with AWS DMS, eliminating data access disruptions during development cycles</li>
+                        </ul>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Apache Spark</span>
+                            <span class="tech-tag">AWS EMR</span>
+                            <span class="tech-tag">Apache Kafka</span>
+                            <span class="tech-tag">LLMs</span>
+                            <span class="tech-tag">Delta Lake</span>
+                            <span class="tech-tag">Airflow</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="experience-card">
+                    <div class="experience-header">
+                        <div class="experience-company">
+                            <h3>Tata Consultancy Services</h3>
+                            <div class="experience-role">Data Engineer</div>
+                        </div>
+                        <div class="experience-duration">Jul 2019 - Apr 2023</div>
+                    </div>
+                    <div class="experience-content">
+                        <ul>
+                            <li><strong>Real-time Data Pipelines:</strong> Designed efficient data ingestion pipeline using Debezium, Apache Kafka, and Apache Iceberg for seamless CDC, ensuring real-time processing and scalability</li>
+                            <li><strong>Data Quality & Testing:</strong> Ensured data quality through SparkTestingBase unit testing, Amazon Deeque, and data cleaning techniques, reducing manual intervention</li>
+                            <li><strong>Cost Optimization:</strong> Revamped Spark Scala jobs leveraging broadcasts, caching, and join strategies; analyzed workloads for cost-effective AWS configurations, achieving ~15% cost savings</li>
+                            <li><strong>End-to-End Pipelines:</strong> Implemented complete ETL pipelines using Apache Airflow, developed Tableau dashboards for real-time KPI tracking</li>
+                            <li><strong>Cloud Data Architecture:</strong> Designed PySpark ETL pipelines to extract data from on-premise servers and load into Amazon Athena for analytics</li>
+                        </ul>
+                        <div class="tech-tags">
+                            <span class="tech-tag">Apache Spark</span>
+                            <span class="tech-tag">Scala</span>
+                            <span class="tech-tag">Apache Kafka</span>
+                            <span class="tech-tag">Apache Iceberg</span>
+                            <span class="tech-tag">AWS</span>
+                            <span class="tech-tag">Tableau</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -766,8 +1136,9 @@
                             <span class="tech-tag">Kafka</span>
                         </div>
                         <div class="project-links">
-                            <a href="#"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="#"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                            <a href="https://github.com/SwastikChowdhury/ML-in-Production-for-RecSys" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -786,8 +1157,9 @@
                             <span class="tech-tag">SMOTE</span>
                         </div>
                         <div class="project-links">
-                            <a href="#"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="#"><i class="fas fa-chart-bar"></i> Dashboard</a>
+                            <a href="https://github.com/SwastikChowdhury/Healthcare-Fraud-Detection" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -806,8 +1178,9 @@
                             <span class="tech-tag">Diffusion Models</span>
                         </div>
                         <div class="project-links">
-                            <a href="#"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="#"><i class="fas fa-images"></i> Gallery</a>
+                            <a href="#" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -827,8 +1200,9 @@
                             <span class="tech-tag">Node.js</span>
                         </div>
                         <div class="project-links">
-                            <a href="#"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="#"><i class="fas fa-book"></i> Documentation</a>
+                            <a href="https://github.com/SwastikChowdhury/Data-Intensive-Microservice-Bookstore" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -847,8 +1221,32 @@
                             <span class="tech-tag">PyTorch</span>
                         </div>
                         <div class="project-links">
-                            <a href="#"><i class="fab fa-github"></i> GitHub</a>
-                            <a href="#"><i class="fas fa-chart-line"></i> Analysis</a>
+                            <a href="https://github.com/SwastikChowdhury/Predicting-COVID-19" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3>YouTube Big Data Analytics</h3>
+                        <p>Built a secure data lake on AWS S3 with automated ETL using Glue and Lambda triggers. Processed unstructured data to Parquet with PySpark for fast, cost-effective querying via Athena.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">AWS S3</span>
+                            <span class="tech-tag">AWS Glue</span>
+                            <span class="tech-tag">Lambda</span>
+                            <span class="tech-tag">PySpark</span>
+                            <span class="tech-tag">Athena</span>
+                            <span class="tech-tag">QuickSight</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="https://github.com/SwastikChowdhury/Youtube-Big-Data-Analytics" target="_blank">
+                                <i class="fab fa-github"></i> GitHub
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -928,7 +1326,7 @@
             <div class="resume-content">
                 <h2 class="section-title">Resume</h2>
                 <div class="section-subtitle" style="color: rgba(255,255,255,0.9);">Download my complete resume to learn more about my experience and qualifications</div>
-                <a href="assets/Resume_Swastik_Chowdhury.pdf" download="Resume_Swastik_Chowdhury.pdf" class="download-btn">
+                <a href="assets/Resume_Swastik_Chowdhury.pdf" download="Swastik_Chowdhury_Resume.pdf" target="_blank" class="download-btn">
                     <i class="fas fa-download"></i>
                     Download Resume
                 </a>
@@ -958,6 +1356,20 @@
     </footer>
 
     <script>
+        // Collapsible sections functionality
+        function toggleSection(sectionId) {
+            const content = document.getElementById(sectionId + '-content');
+            const arrow = document.getElementById(sectionId + '-arrow');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                arrow.classList.remove('rotated');
+            } else {
+                content.classList.add('expanded');
+                arrow.classList.add('rotated');
+            }
+        }
+
         // Background slideshow
         (function() {
             const backgrounds = document.querySelectorAll('#bg div');
