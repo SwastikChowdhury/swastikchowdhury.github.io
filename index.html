@@ -116,13 +116,6 @@ body.light{
 .proj-link{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;transition:gap .2s;margin-top:auto}
 .proj-card:hover .proj-link{gap:10px}
 
-/* ===== SKILLS ===== */
-/* .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2.5rem}
-.skill-cat-name{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:.25em;text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)}
-.skill-list{display:flex;flex-wrap:wrap;gap:8px}
-.skill{font-size:13px;padding:6px 14px;background:var(--surface);border:1px solid var(--border);color:var(--text);transition:all .2s;cursor:default}
-.skill:hover{background:var(--gold-bg);border-color:var(--gold);color:var(--gold)} */
-
 /* ===== WRITING ===== */
 .writing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem}
 .write-card{background:var(--surface);border:1px solid var(--border);padding:2rem;transition:all .3s;display:flex;flex-direction:column;text-decoration:none;color:var(--text)}
@@ -202,6 +195,22 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 .cmdk-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 @keyframes cmdkFade{from{opacity:0}to{opacity:1}}
 @media(max-width:600px){.cmdk-overlay{padding-top:5vh}.cmdk-modal{width:95%}}
+
+/* ===== SCROLL REVEALS ===== */
+.reveal{
+  opacity:0;
+  transform:translateY(24px);
+  transition:opacity .75s cubic-bezier(.2,.7,.2,1), transform .75s cubic-bezier(.2,.7,.2,1);
+  transition-delay:var(--stagger, 0s);
+  will-change:opacity, transform;
+}
+.reveal.in-view{
+  opacity:1;
+  transform:translateY(0);
+}
+@media (prefers-reduced-motion: reduce){
+  .reveal{opacity:1;transform:none;transition:none}
+}
 
 </style>
 </head>
@@ -374,7 +383,7 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
         <span class="proj-link">View on GitHub →</span>
       </a>
 
-      <a href="#" class="proj-card">
+      <a href="https://github.com/SwastikChowdhury/DeepLearning-Based-Artwork-Restoration" class="proj-card">
         <div class="proj-num">// 03</div>
         <h3 class="proj-title"> Artwork Restoration</h3>
         <p class="proj-desc">Automated framework using GANs and diffusion models with ResNet generator, PatchGAN discriminator, VGG perceptual loss — trained on 8,000+ artworks with advanced data augmentation.</p>
@@ -614,5 +623,71 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 })();
 </script>
 
+
+<script>
+(function(){
+  // Bail out if no IntersectionObserver or user prefers reduced motion
+  if (!('IntersectionObserver' in window) ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
+  // Helper: stagger children inside each parent matching selector
+  function staggerChildren(parentSel, childSel, stepMs){
+    document.querySelectorAll(parentSel).forEach(function(parent){
+      parent.querySelectorAll(childSel).forEach(function(child, i){
+        child.classList.add('reveal');
+        child.style.setProperty('--stagger', (i * stepMs) + 'ms');
+      });
+    });
+  }
+
+  // Cascading reveals inside grids/lists
+  staggerChildren('.proj-grid',    '.proj-card',  80);
+  staggerChildren('.writing-grid', '.write-card', 80);
+  staggerChildren('.edu-grid',     '.edu-card',  100);
+  staggerChildren('.exp-bullets',  'li',          55);
+
+  // Standalone reveal elements (no stagger by default)
+  var solo = [
+    '.section-tag',
+    '.section-title',
+    '.about-card',
+    '.exp-entry',
+    '.cta-title',
+    '.cta-sub',
+    '.cta-contacts'
+  ];
+  solo.forEach(function(sel){
+    document.querySelectorAll(sel).forEach(function(el){
+      el.classList.add('reveal');
+    });
+  });
+
+  // About paragraphs/blockquote with their own gentle stagger
+  document.querySelectorAll('.about-text > p, .about-text > blockquote').forEach(function(el, i){
+    el.classList.add('reveal');
+    el.style.setProperty('--stagger', (i * 70) + 'ms');
+  });
+
+  // Observe and reveal once
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: '0px 0px -60px 0px'
+  });
+
+  document.querySelectorAll('.reveal').forEach(function(el){
+    observer.observe(el);
+  });
+})();
+</script>
+  
 </body>
 </html>
