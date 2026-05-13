@@ -1,1481 +1,508 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Swastik Chowdhury </title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Dynamic Color Variables */
-        :root {
-            --primary-hue: 240;
-            --secondary-hue: 280;
-            --primary-color: hsl(var(--primary-hue), 70%, 60%);
-            --secondary-color: hsl(var(--secondary-hue), 65%, 65%);
-            --gradient-primary: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-        }
-
-        /* Color Animation */
-        @keyframes colorShift {
-            0% { 
-                --primary-hue: 240; 
-                --secondary-hue: 280; 
-            }
-            20% { 
-                --primary-hue: 220; 
-                --secondary-hue: 260; 
-            }
-            40% { 
-                --primary-hue: 200; 
-                --secondary-hue: 240; 
-            }
-            60% { 
-                --primary-hue: 260; 
-                --secondary-hue: 300; 
-            }
-            80% { 
-                --primary-hue: 280; 
-                --secondary-hue: 320; 
-            }
-            100% { 
-                --primary-hue: 240; 
-                --secondary-hue: 280; 
-            }
-        }
-
-        body {
-            animation: colorShift 15s ease-in-out infinite;
-        }
-
-        /* Background Slideshow */
-        #bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            opacity: 0.4;
-        }
-
-        #bg div {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 2s ease-in-out;
-        }
-
-        #bg div.visible {
-            opacity: 1;
-        }
-
-        /* Glass morphism overlay */
-        .glass-overlay {
-            backdrop-filter: blur(10px) saturate(200%);
-            -webkit-backdrop-filter: blur(10px) saturate(200%);
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 1rem 0;
-            backdrop-filter: blur(20px) saturate(200%);
-            -webkit-backdrop-filter: blur(20px) saturate(200%);
-            background: rgba(255, 255, 255, 0.95);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-            transform: translateY(-2px);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 50%;
-            background: var(--gradient-primary);
-            transition: all 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-            left: 0;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: white;
-            position: relative;
-            background: linear-gradient(135deg, hsla(var(--primary-hue), 70%, 60%, 0.8) 0%, hsla(var(--secondary-hue), 65%, 65%, 0.8) 100%);
-        }
-
-        .hero-content {
-            max-width: 800px;
-            padding: 2rem;
-        }
-
-        .hero-content h1 {
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease 0.2s both;
-            opacity: 0.9;
-        }
-
-        .hero-description {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease 0.4s both;
-            opacity: 0.8;
-        }
-
-        .cta-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 1s ease 0.6s both;
-        }
-
-        .cta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 15px 30px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            font-weight: 500;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .cta-button:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        }
-
-        .cta-button.primary {
-            background: var(--gradient-primary);
-            border: none;
-        }
-
-        .cta-button.primary:hover {
-            background: linear-gradient(135deg, hsl(var(--primary-hue), 70%, 55%) 0%, hsl(var(--secondary-hue), 65%, 60%) 100%);
-        }
-
-        /* Sections */
-        section {
-            padding: 6rem 0;
-            position: relative;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            position: relative;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            color: #666;
-            margin-bottom: 4rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        /* About Section */
-        .about {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.9) 100%);
-            backdrop-filter: blur(20px);
-        }
-
-        .about-content {
-            max-width: 800px;
-            margin: 0 auto;
-            text-align: center;
-            padding: 3rem;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .about-text p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            color: #555;
-            line-height: 1.8;
-        }
-
-        .highlight {
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-weight: 600;
-        }
-
-        /* Collapsible Sections */
-        .collapsible-section {
-            margin: 2rem 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .collapsible-toggle {
-            width: 100%;
-            background: none;
-            border: none;
-            padding: 1.5rem 2rem;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: inherit;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-
-        .collapsible-toggle:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .toggle-icon {
-            font-size: 1.5rem;
-        }
-
-        .toggle-text {
-            flex: 1;
-            text-align: left;
-            color: var(--primary-color);
-        }
-
-        .toggle-arrow {
-            transition: transform 0.3s ease;
-            color: var(--primary-color);
-        }
-
-        .toggle-arrow.rotated {
-            transform: rotate(180deg);
-        }
-
-        .collapsible-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-            padding: 0 2rem;
-        }
-
-        .collapsible-content.expanded {
-            max-height: 500px;
-            padding: 0 2rem 1.5rem 2rem;
-        }
-
-        .collapsible-content p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .collapsible-content ul li {
-            color: #555;
-            line-height: 1.6;
-        }
-        .experience {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-        }
-
-        .experience-timeline {
-            max-width: 900px;
-            margin: 0 auto;
-            position: relative;
-        }
-
-        .experience-timeline::before {
-            content: '';
-            position: absolute;
-            left: 30px;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: var(--gradient-primary);
-        }
-
-        .experience-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 2.5rem;
-            margin-bottom: 2rem;
-            margin-left: 80px;
-            position: relative;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .experience-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
-
-        .experience-card::before {
-            content: '';
-            position: absolute;
-            left: -65px;
-            top: 30px;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--gradient-primary);
-            border: 4px solid white;
-            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.8);
-        }
-
-        .experience-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.5rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
-        .experience-company h3 {
-            color: #333;
-            font-size: 1.4rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .experience-role {
-            color: var(--primary-color);
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .experience-duration {
-            color: #666;
-            font-weight: 500;
-            padding: 0.5rem 1rem;
-            background: rgba(102, 126, 234, 0.1);
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-
-        .experience-content p {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .experience-content ul {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 1.5rem;
-        }
-
-        .experience-content li {
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 0.8rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-
-        .experience-content li::before {
-            content: '▸';
-            position: absolute;
-            left: 0;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        .experience-content .tech-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-
-        .experience-content .tech-tag {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        .skills {
-            background: linear-gradient(135deg, hsla(var(--primary-hue), 70%, 60%, 0.05) 0%, hsla(var(--secondary-hue), 65%, 65%, 0.05) 100%);
-        }
-
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 2.5rem 2rem;
-            border-radius: 20px;
-            text-align: center;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .skill-category:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
-
-        .skill-category i {
-            font-size: 3.5rem;
-            margin-bottom: 1.5rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .skill-category h3 {
-            margin-bottom: 1rem;
-            color: #333;
-            font-size: 1.3rem;
-        }
-
-        .skill-list {
-            color: #666;
-            font-size: 1rem;
-            line-height: 1.6;
-        }
-
-        /* Projects Grid */
-        .projects {
-            background: rgba(255, 255, 255, 0.9);
-            backdrop-filter: blur(20px);
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .project-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-        }
-
-        .project-image {
-            height: 200px;
-            background: var(--gradient-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 3rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .project-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
-        }
-
-        .project-content {
-            padding: 2rem;
-        }
-
-        .project-content h3 {
-            margin-bottom: 1rem;
-            color: #333;
-            font-size: 1.3rem;
-        }
-
-        .project-content p {
-            color: #666;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .tech-tag {
-            background: var(--gradient-primary);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .project-links {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .project-links a {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .project-links a:hover {
-            color: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-
-        /* Blog Section */
-        .blog {
-            background: linear-gradient(135deg, hsla(var(--primary-hue), 70%, 60%, 0.05) 0%, hsla(var(--secondary-hue), 65%, 65%, 0.05) 100%);
-        }
-
-        .blog-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-
-        .blog-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 20px;
-            padding: 2.5rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-        }
-
-        .blog-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-        }
-
-        .blog-date {
-            color: var(--primary-color);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-            font-weight: 500;
-        }
-
-        .blog-card h3 {
-            margin-bottom: 1rem;
-            color: #333;
-            font-size: 1.3rem;
-            line-height: 1.4;
-        }
-
-        .blog-card p {
-            color: #666;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .read-more {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .read-more:hover {
-            color: var(--secondary-color);
-            transform: translateX(5px);
-        }
-
-        /* Resume Section */
-        .resume-section {
-            background: var(--gradient-primary);
-            color: white;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .resume-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
-        }
-
-        .resume-section .section-title {
-            color: white;
-            -webkit-text-fill-color: white;
-        }
-
-        .resume-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--primary-color);
-            padding: 18px 35px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        .download-btn:hover {
-            background: white;
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Footer */
-        footer {
-            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
-            color: white;
-            text-align: center;
-            padding: 4rem 0 2rem;
-            position: relative;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .social-links a {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border-radius: 50%;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .social-links a:hover {
-            background: var(--gradient-primary);
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-        }
-
-        .floating {
-            animation: float 3s ease-in-out infinite;
-        }
-
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-subtitle {
-                font-size: 1.2rem;
-            }
-
-            .section-title {
-                font-size: 2.2rem;
-            }
-
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .skills-grid,
-            .projects-grid,
-            .blog-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                padding: 0 1rem;
-            }
-
-            section {
-                padding: 4rem 0;
-            }
-
-            /* Experience mobile styles */
-            .experience-timeline::before {
-                left: 15px;
-            }
-
-            .experience-card {
-                margin-left: 40px;
-                padding: 2rem 1.5rem;
-            }
-
-            .experience-card::before {
-                left: -28px;
-                width: 15px;
-                height: 15px;
-            }
-
-            .experience-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .experience-content .tech-tags {
-                justify-content: center;
-            }
-        }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Swastik Chowdhury — Software Engineer · Data</title>
+<meta name="description" content="Portfolio of Swastik Chowdhury — Software Engineer · Data. CMU MSIS. Building production data systems across Spark, Airflow, dbt, and modern lakehouse architectures." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Manrope',sans-serif;line-height:1.65;transition:background .4s,color .4s;overflow-x:hidden;font-weight:400}
+
+/* ===== THEME TOKENS ===== */
+body.dark{
+  --bg:#0a0a0a;--surface:#141414;--surface2:#1a1a1a;
+  --border:#262626;--border2:#3a3a3a;
+  --text:#efefef;--text2:#a0a0a0;--text3:#666;
+  --gold:#D4A537;--gold-soft:rgba(212,165,55,.12);--gold-bg:#241B0A;
+  background:var(--bg);color:var(--text);
+}
+body.light{
+  --bg:#ffffff;--surface:#fafaf7;--surface2:#f3f1ea;
+  --border:#e8e6df;--border2:#cfccc1;
+  --text:#0a0a0a;--text2:#555;--text3:#888;
+  --gold:#B8841F;--gold-soft:rgba(184,132,31,.08);--gold-bg:#FAEEDA;
+  background:var(--bg);color:var(--text);
+}
+
+.serif{font-family:'Playfair Display',serif}
+.mono{font-family:'JetBrains Mono',monospace}
+.container{max-width:1180px;margin:0 auto;padding:0 2rem}
+
+/* ===== NAV ===== */
+.nav{position:sticky;top:0;z-index:100;background:var(--bg);border-bottom:1px solid var(--border);transition:background .4s,border-color .4s;backdrop-filter:blur(10px)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:68px}
+.nav-logo{font-family:'Playfair Display',serif;font-weight:700;font-size:18px;letter-spacing:0.5px}
+.nav-logo span{color:var(--gold)}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-link{background:none;border:none;cursor:pointer;font-family:'Manrope',sans-serif;font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--text2);position:relative;padding:6px 0;transition:color .25s}
+.nav-link::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1px;background:var(--gold);transition:width .25s}
+.nav-link:hover{color:var(--gold)}
+.nav-link:hover::after{width:100%}
+.theme-toggle{background:transparent;border:1px solid var(--border2);color:var(--text);width:38px;height:38px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .25s}
+.theme-toggle:hover{border-color:var(--gold);color:var(--gold);transform:rotate(15deg)}
+
+/* ===== HERO ===== */
+.hero{min-height:88vh;display:flex;flex-direction:column;justify-content:center;padding:5rem 0 4rem;position:relative}
+.hero::before{content:'';position:absolute;top:20%;right:-5%;width:600px;height:600px;background:radial-gradient(circle,var(--gold-soft) 0%,transparent 65%);pointer-events:none;z-index:0}
+.hero > *{position:relative;z-index:1}
+.hero-meta{font-family:'JetBrains Mono',monospace;color:var(--gold);font-size:11px;letter-spacing:0.35em;margin-bottom:1.75rem;text-transform:uppercase}
+.hero-name{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(3.2rem,10vw,7.5rem);line-height:0.95;letter-spacing:-0.04em;margin-bottom:0.5rem}
+.hero-name .dot{color:var(--gold)}
+.hero-title{font-family:'Playfair Display',serif;font-style:italic;font-weight:400;font-size:clamp(1.4rem,4vw,2.5rem);color:var(--text2);margin-bottom:2.5rem;letter-spacing:-0.01em}
+.hero-tagline{max-width:580px;font-size:17px;line-height:1.85;color:var(--text2);margin-bottom:2.5rem}
+.hero-tagline strong{color:var(--text);font-weight:500}
+
+.btn-row{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:5rem}
+.btn{font-family:'Manrope',sans-serif;font-size:13px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;padding:14px 32px;cursor:pointer;border:none;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all .25s}
+.btn-primary{background:var(--gold);color:var(--bg)}
+.btn-primary:hover{background:var(--text);color:var(--bg);transform:translateY(-2px)}
+.btn-outline{background:transparent;color:var(--text);border:1px solid var(--border2)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;padding-top:2.5rem;border-top:1px solid var(--border)}
+.stat-num{font-family:'Playfair Display',serif;font-weight:700;font-size:30px;color:var(--gold);line-height:1}
+.stat-lbl{font-size:11px;letter-spacing:.18em;color:var(--text3);margin-top:8px;text-transform:uppercase}
+
+/* ===== SECTION ===== */
+.section{padding:6rem 0}
+.section-tag{font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:0.35em;color:var(--gold);text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;gap:1rem}
+.section-tag::after{content:'';display:block;width:60px;height:1px;background:var(--gold)}
+.section-title{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(2rem,5vw,3.5rem);letter-spacing:-0.02em;margin-bottom:3.5rem;line-height:1.1}
+.section-title em{font-weight:400;font-style:italic;color:var(--gold)}
+
+/* ===== ABOUT ===== */
+.about-grid{display:grid;grid-template-columns:2fr 1fr;gap:4rem;align-items:start}
+.about-text p{font-size:16px;line-height:1.9;color:var(--text2);margin-bottom:1.5rem}
+.about-text p strong{color:var(--text);font-weight:500}
+.about-text p em{color:var(--gold);font-style:italic}
+.about-text blockquote{padding:1.25rem 0 1.25rem 1.75rem;border-left:2px solid var(--gold);font-family:'Playfair Display',serif;font-style:italic;font-size:20px;color:var(--text);margin:2rem 0;line-height:1.5}
+.about-text blockquote cite{display:block;margin-top:10px;font-style:normal;font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--text3);letter-spacing:.15em;text-transform:uppercase}
+
+.about-card{background:var(--surface);border:1px solid var(--border);padding:2rem;font-family:'JetBrains Mono',monospace}
+.about-card-title{color:var(--gold);font-size:11px;letter-spacing:.3em;margin-bottom:1.5rem;text-transform:uppercase}
+.about-row{display:flex;justify-content:space-between;padding:.7rem 0;border-bottom:1px solid var(--border);font-size:12px;gap:1rem}
+.about-row:last-child{border-bottom:none}
+.about-row span:first-child{color:var(--text3)}
+.about-row span:last-child{color:var(--text);text-align:right}
+.status-dot{display:inline-block;width:8px;height:8px;background:#22c55e;border-radius:50%;margin-right:6px;box-shadow:0 0 0 3px rgba(34,197,94,0.2)}
+
+/* ===== EXPERIENCE ===== */
+.exp-entry{display:grid;grid-template-columns:200px 1fr;gap:3rem;padding:2.5rem 0;border-bottom:1px solid var(--border)}
+.exp-entry:last-child{border-bottom:none}
+.exp-period{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);letter-spacing:0.05em}
+.exp-loc{font-size:12px;color:var(--text3);margin-top:8px}
+.exp-role{font-size:22px;font-weight:500;color:var(--text);font-family:'Playfair Display',serif;margin-bottom:6px;letter-spacing:-0.01em}
+.exp-company{font-size:12px;color:var(--gold);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;font-family:'JetBrains Mono',monospace}
+.exp-bullets{list-style:none;display:flex;flex-direction:column;gap:12px}
+.exp-bullets li{display:flex;gap:14px;color:var(--text2);font-size:15px;line-height:1.75}
+.exp-bullets li::before{content:'—';color:var(--gold);flex-shrink:0;margin-top:1px}
+.exp-bullets li strong{color:var(--text);font-weight:500}
+
+/* ===== PROJECTS ===== */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(310px,1fr));gap:1.5rem}
+.proj-card{background:var(--surface);border:1px solid var(--border);padding:2rem;transition:all .3s;display:flex;flex-direction:column;text-decoration:none;color:var(--text)}
+.proj-card:hover{border-color:var(--gold);transform:translateY(-4px);background:var(--surface2)}
+.proj-num{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:0.2em;margin-bottom:1.5rem}
+.proj-title{font-family:'Playfair Display',serif;font-weight:700;font-size:20px;margin-bottom:1rem;line-height:1.3;letter-spacing:-0.01em}
+.proj-desc{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:1.5rem;flex:1}
+.proj-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.25rem}
+.proj-tag{font-family:'JetBrains Mono',monospace;font-size:11px;padding:3px 10px;background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:2px}
+.proj-link{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;transition:gap .2s;margin-top:auto}
+.proj-card:hover .proj-link{gap:10px}
+
+/* ===== SKILLS ===== */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2.5rem}
+.skill-cat-name{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:.25em;text-transform:uppercase;margin-bottom:1rem;padding-bottom:0.75rem;border-bottom:1px solid var(--border)}
+.skill-list{display:flex;flex-wrap:wrap;gap:8px}
+.skill{font-size:13px;padding:6px 14px;background:var(--surface);border:1px solid var(--border);color:var(--text);transition:all .2s;cursor:default}
+.skill:hover{background:var(--gold-bg);border-color:var(--gold);color:var(--gold)}
+
+/* ===== WRITING ===== */
+.writing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem}
+.write-card{background:var(--surface);border:1px solid var(--border);padding:2rem;transition:all .3s;display:flex;flex-direction:column;text-decoration:none;color:var(--text)}
+.write-card:hover{border-color:var(--gold);transform:translateY(-4px)}
+.write-pub{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem}
+.write-title{font-family:'Playfair Display',serif;font-weight:700;font-size:19px;margin-bottom:1rem;line-height:1.3;letter-spacing:-0.01em}
+.write-excerpt{font-size:14px;color:var(--text2);line-height:1.75;margin-bottom:1.5rem;flex:1}
+.write-link{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--gold);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;margin-top:auto;transition:gap .2s}
+.write-card:hover .write-link{gap:10px}
+
+/* ===== EDUCATION ===== */
+.edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.edu-card{background:var(--surface);border:1px solid var(--border);padding:2rem;border-left:3px solid var(--gold)}
+.edu-period{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:1rem}
+.edu-school{font-family:'Playfair Display',serif;font-weight:700;font-size:22px;margin-bottom:6px;letter-spacing:-0.01em}
+.edu-degree{font-size:14px;color:var(--text2);margin-bottom:1rem}
+.edu-courses{font-size:13px;color:var(--text3);line-height:1.7}
+.edu-courses strong{color:var(--text);font-weight:500}
+
+/* ===== CTA ===== */
+.cta{padding:7rem 0 5rem;text-align:center;border-top:1px solid var(--border);position:relative}
+.cta-title{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(2.2rem,6vw,3.8rem);line-height:1.1;letter-spacing:-0.02em;margin-bottom:1.5rem}
+.cta-title em{font-style:italic;color:var(--gold);font-weight:400}
+.cta-sub{font-size:16px;color:var(--text2);max-width:500px;margin:0 auto 2.5rem;line-height:1.8}
+.cta-contacts{display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;margin-top:2.5rem}
+.contact-link{color:var(--text2);text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;padding:10px 18px;border:1px solid var(--border);transition:all .2s;font-family:'JetBrains Mono',monospace}
+.contact-link:hover{border-color:var(--gold);color:var(--gold)}
+
+/* ===== FOOTER ===== */
+.foot{padding:2rem 0;border-top:1px solid var(--border);text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:0.25em}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .8s ease forwards}
+.d1{animation-delay:.1s;opacity:0}.d2{animation-delay:.25s;opacity:0}
+.d3{animation-delay:.4s;opacity:0}.d4{animation-delay:.55s;opacity:0}
+.d5{animation-delay:.7s;opacity:0}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px){
+  .about-grid,.edu-grid{grid-template-columns:1fr}
+  .exp-entry{grid-template-columns:1fr;gap:1rem}
+  .hero-stats{grid-template-columns:repeat(2,1fr);gap:1.5rem}
+  .nav-links{gap:1rem}
+  .nav-link{font-size:11px}
+}
+@media (max-width: 600px){
+  .container{padding:0 1.5rem}
+  .nav-link:nth-of-type(n+4){display:none}
+  .btn{padding:12px 22px;font-size:12px}
+}
+</style>
 </head>
-<body class="is-preload">
-    <!-- Background -->
-    <div id="bg">
-        <div style="background-image: url('images/hamza-osman-bB-wdNt71vU-unsplash.jpg');"></div>
-        <div style="background-image: url('images/benjamin-child-GWe0dlVD9e0-unsplash.jpg');"></div>
+<body class="dark">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="container nav-inner">
+      <div class="nav-logo">SC<span>.</span></div>
+      <div class="nav-links">
+        <button class="nav-link" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">About</button>
+        <button class="nav-link" onclick="document.getElementById('experience').scrollIntoView({behavior:'smooth'})">Experience</button>
+        <button class="nav-link" onclick="document.getElementById('projects').scrollIntoView({behavior:'smooth'})">Projects</button>
+        <button class="nav-link" onclick="document.getElementById('writing').scrollIntoView({behavior:'smooth'})">Writing</button>
+        <button class="nav-link" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</button>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark">◐</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero container">
+    <div class="hero-meta fade-up d1">PORTFOLIO · PITTSBURGH, PA</div>
+    <h1 class="hero-name fade-up d2">Swastik<br>Chowdhury<span class="dot">.</span></h1>
+    <p class="hero-title fade-up d3">Software Engineer · Data</p>
+    <p class="hero-tagline fade-up d4">
+      Carnegie Mellon MSIS · 5+ years building <strong>production data systems</strong> across Spark, Airflow, dbt, and modern lakehouse architectures. Currently exploring RAG and retrieval at <strong>National Transfer Network</strong>.
+    </p>
+    <div class="btn-row fade-up d5">
+      <a href="#projects" class="btn btn-primary">View Projects →</a>
+      <a href="#contact" class="btn btn-outline">Let's Connect</a>
+    </div>
+    <div class="hero-stats fade-up d5">
+      <div><div class="stat-num">5+</div><div class="stat-lbl">Years in Data</div></div>
+      <div><div class="stat-num">CMU</div><div class="stat-lbl">MSIS Graduate</div></div>
+      <div><div class="stat-num">$1M+</div><div class="stat-lbl">Cost Reduction</div></div>
+      <div><div class="stat-num">5</div><div class="stat-lbl">Articles Published</div></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section container">
+    <div class="section-tag">01 · About</div>
+    <h2 class="section-title">The story behind <em>the data.</em></h2>
+
+    <div class="about-grid">
+      <div class="about-text">
+        <p>I often found myself asking: <em>"What's the story behind the data? What decisions are we enabling?"</em> That curiosity led me to Carnegie Mellon University.</p>
+
+        <blockquote>
+          The usefulness of a pot comes from its emptiness.
+          <cite>— Lao Tzu</cite>
+        </blockquote>
+
+        <p>I've come to believe data works the same way. Its value isn't in the volume itself, but in the space it creates for better questions, sharper decisions, and the unexpected insights that surface when you let it breathe. The empty pot becomes a vessel; raw events become understanding.</p>
+
+        <p>What I value most, though, is the people on the other side of the work. The pipelines I'm proudest of weren't built alone — they came together through close collaboration, often at odd hours and over too much coffee. At CMU I got to extend that further as a <strong>Teaching Assistant for Machine Learning in Production / AI Engineering</strong> and <strong>Advanced Python</strong>, where the best moments were watching students click into hard ideas through conversation.</p>
+
+        <p>Whether it's a 3 AM incident thread or a whiteboard at midnight, I do my best work in good company.</p>
+      </div>
+
+      <div class="about-card">
+        <div class="about-card-title">$ whoami</div>
+        <div class="about-row"><span>location</span><span>Pittsburgh, PA</span></div>
+        <div class="about-row"><span>relocation</span><span>open</span></div>
+        <div class="about-row"><span>degree</span><span>CMU · MSIS</span></div>
+        <div class="about-row"><span>focus</span><span>Data Engineering</span></div>
+        <div class="about-row"><span>tools</span><span>Spark · Airflow · dbt</span></div>
+        <div class="about-row"><span>status</span><span><span class="status-dot"></span>FTE roles</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="section container">
+    <div class="section-tag">02 · Experience</div>
+    <h2 class="section-title">Where I've <em>built things.</em></h2>
+
+    <div class="exp-entry">
+      <div>
+        <div class="exp-period">OCT 2025 — PRESENT</div>
+        <div class="exp-loc">Pittsburgh, PA</div>
+      </div>
+      <div>
+        <h3 class="exp-role">Data Science</h3>
+        <div class="exp-company">National Transfer Network</div>
+        <ul class="exp-bullets">
+          <li>Built a <strong>RAG system</strong> over internal company documentation and unstructured data, giving students natural-language access to institutional knowledge.</li>
+          <li>Implemented semantic retrieval with <strong>ChromaDB</strong> and built an evaluation pipeline to compare embedding models and reduce hallucinations, using the results to select the best-performing configuration.</li>
+        </ul>
+      </div>
     </div>
 
-    <!-- Header -->
-    <header>
-        <nav>
-            <div class="logo">Swastik Chowdhury</div>
-            <ul class="nav-links">
-                <li><a href="#about">About</a></li>
-                <li><a href="#experience">Experience</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#blog">Blog</a></li>
-                <li><a href="#resume">Resume</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="exp-entry">
+      <div>
+        <div class="exp-period">APR 2023 — MAR 2024</div>
+        <div class="exp-loc">Remote</div>
+      </div>
+      <div>
+        <h3 class="exp-role">Software Engineer · Data</h3>
+        <div class="exp-company">Vertisage Technologies</div>
+        <ul class="exp-bullets">
+          <li>Developed a financial invoice data extraction pipeline using <strong>LlamaIndex, Pydantic, and AWS Textract OCR</strong> — transforming semi-structured PDFs into schema-validated Parquet tables.</li>
+          <li>Led migration of 80+ legacy Redshift MPP stored procedures to Apache Spark (Python) ETL on EMR with Airflow orchestration, cutting annual infrastructure cost by <strong>$1M+</strong> and reducing job runtime by <strong>40%</strong> while maintaining full data correctness.</li>
+          <li>Implemented a <strong>Debezium-based Change Data Capture</strong> pipeline writing to Iceberg tables on S3, delivering sub-5-minute updates to fraud analytics datasets consumed by the Risk team.</li>
+          <li>Built event-driven monitoring and automated alerting with SNS / SQS / Lambda, reducing MTTD and improving SLA adherence from 95% to <strong>99.5%</strong> for user behavioral telemetry datasets.</li>
+        </ul>
+      </div>
+    </div>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>SWASTIK CHOWDHURY</h1>
-            <div class="hero-subtitle"> Software engineer skilled in Date Engineering, scalable ML and cloud systems—building robust AI for real-world impacts. </div>
-            <div class="hero-description">5+ Years Experience | Carnegie Mellon Graduate Student </div>
-            <div class="cta-buttons">
-                <a href="#about" class="cta-button primary">
-                    <i class="fas fa-user"></i>
-                    Learn About Me
-                </a>
-                <a href="#resume" class="cta-button">
-                    <i class="fas fa-download"></i>
-                    Download Resume
-                </a>
-            </div>
+    <div class="exp-entry">
+      <div>
+        <div class="exp-period">JUL 2019 — APR 2023</div>
+        <div class="exp-loc">India</div>
+      </div>
+      <div>
+        <h3 class="exp-role">Software Engineer · Data</h3>
+        <div class="exp-company">Tata Consultancy Services</div>
+        <ul class="exp-bullets">
+          <li>Optimized Apache Spark (Python) ETL by diagnosing data skew via Spark UI stage metrics and applying salting and broadcast joins — cutting runtime by <strong>40%</strong> and cloud compute cost by 15% across production pipelines.</li>
+          <li>Owned primary <strong>on-call rotation for 25+ production Spark/Airflow pipelines</strong> serving 4 downstream teams; authored runbooks and automated recurring failure modes to cut repeat incidents by 60% and reduce MTTR from 45 min to 15 min.</li>
+          <li>Built Apache Spark (Python) ETL pipelines with Airflow ingesting <strong>5+ GB/day</strong> of user-interaction JSON events into S3, partitioning by date and event type — cutting Athena scan volumes and query costs by 40% and dropping analyst query latency from minutes to seconds.</li>
+          <li>Designed dimensional data marts using <strong>dbt incremental models and Snowflake clustering strategies</strong>, improving reporting performance and reducing warehouse compute costs by 20%.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section container">
+    <div class="section-tag">03 · Projects</div>
+    <h2 class="section-title">Things I've <em>shipped.</em></h2>
+
+    <div class="proj-grid">
+      <a href="https://github.com/SwastikChowdhury/Healthcare-Fraud-Detection" target="_blank" rel="noopener" class="proj-card">
+        <div class="proj-num">// 01</div>
+        <h3 class="proj-title">Healthcare Fraud Detection</h3>
+        <p class="proj-desc">Robust fraud detection system with bronze-silver-gold data architecture, SMOTE for class imbalance handling, and real-time dashboard insights with asynchronous API integration.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Python</span>
+          <span class="proj-tag">Flask</span>
+          <span class="proj-tag">Scikit-Learn</span>
+          <span class="proj-tag">SMOTE</span>
         </div>
-    </section>
+        <span class="proj-link">View on GitHub →</span>
+      </a>
 
-    <!-- About Section -->
-    <section id="about" class="about fade-in">
-        <div class="container">
-            <h2 class="section-title">ABOUT ME</h2>
-            <div class="about-content">
-                <div class="about-text">
-                    <p>Over the past five years, I've had the opportunity to work at both a <span class="highlight">global tech consultancy (TCS)</span> and a <span class="highlight">fast-paced startup (Vertisage)</span>—experiences that shaped me into an adaptable, resourceful engineer. I learned how to tame distributed systems, optimize Spark pipelines, and lead a migration to EMR that ultimately saved over <span class="highlight">$1M in annual costs</span>.</p>
-                    
-                    <p>Still, I often found myself asking: <em>"What's the story behind the data? What decisions are we enabling?"</em> That curiosity led me to <span class="highlight">Carnegie Mellon University</span>, where I deepened my understanding of building scalable, production-level ML systems—bridging my past experience in data engineering with my aspirations in machine learning.</p>
-                    
-                    <p>While I take pride in writing clean, scalable code, I've found my greatest strength lies in <span class="highlight">working closely with others to build great systems</span>. Collaboration has been a constant theme across my career and at CMU—whether through team projects or my roles as a Teaching Assistant for both <em>Machine Learning in Production/AI Engineering</em> and <em>Advanced Python</em>.</p>
-
-                    <!-- Key Achievements Collapsible Section -->
-                    <div class="collapsible-section">
-                        <button class="collapsible-toggle" onclick="toggleSection('achievements')">
-                            <span class="toggle-icon">🏆</span>
-                            <span class="toggle-text">Key Achievements</span>
-                            <i class="fas fa-chevron-down toggle-arrow" id="achievements-arrow"></i>
-                        </button>
-                        <div class="collapsible-content" id="achievements-content">
-                            <ul style="list-style: none; padding: 0;">
-                                <li style="margin-bottom: 0.8rem;"><strong>💰 Cost Optimization:</strong> Led migration from Amazon Redshift to EMR using Apache Spark, saving $1M+ annually</li>
-                                <li style="margin-bottom: 0.8rem;"><strong>⚡ Real-Time Data Ingestion:</strong> Designed CDC pipelines with Debezium, Kafka, and Iceberg for scalable, real-time analytics</li>
-                                <li style="margin-bottom: 0.8rem;"><strong>🚀 Spark Optimization:</strong> Reduced Spark job costs by 15%+ through advanced resource allocation and workload analysis</li>
-                                <li style="margin-bottom: 0.8rem;"><strong>🤖 AI Product Development:</strong> Built a production-ready tool for document indexing using LlamaIndex and LLMs, streamlining support and knowledge sharing</li>
-                                <li style="margin-bottom: 0.8rem;"><strong>👨‍🏫 Teaching:</strong> Graduate Teaching Assistant for Machine Learning in Production/AI Engineering and Advanced Python at CMU, mentoring teams on deploying ML systems in production and data focused python.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- How I Can Contribute Collapsible Section -->
-                    <div class="collapsible-section">
-                        <button class="collapsible-toggle" onclick="toggleSection('contribute')">
-                            <span class="toggle-icon">💡</span>
-                            <span class="toggle-text">How I Can Immediately Contribute</span>
-                            <i class="fas fa-chevron-down toggle-arrow" id="contribute-arrow"></i>
-                        </button>
-                        <div class="collapsible-content" id="contribute-content">
-                            <p>In my previous roles, I developed and maintained large-scale data infrastructure using Spark, Hadoop, and Kafka—writing production-grade pipelines in Scala, Java, and Python. I led the major Redshift-to-EMR migration, implemented real-time ingestion pipelines using Kafka and Iceberg for seamless CDC, and integrated Delta Lake to support upserts and schema evolution across our data lake.</p>
-                            <p>At CMU, I've built a strong technical foundation across both ML and systems through courses like <em>Machine Learning in Production</em>, <em>Distributed Systems</em>, <em>Databases</em>, and <em>DevSecOps</em>—learning to think rigorously about scalability, latency, reliability, and fairness in ML applications. My goal is to become an engineer who can <span class="highlight">own the full pipeline—from data ingestion to model deployment and post-deployment monitoring</span>.</p>
-                        </div>
-                    </div>
-                    
-                    <p>📍 <strong>Location:</strong> Pittsburgh, PA, USA (Open to Relocation)<br>
-                    🚀 <strong>Status:</strong> Actively seeking full-time roles starting August 2025<br>
-                    💼 <strong>Open to:</strong> Data Engineering, Machine Learning Engineering, and Software Engineering roles</p>
-                </div>
-            </div>
+      <a href="https://github.com/SwastikChowdhury/ML-in-Production-for-RecSys" target="_blank" rel="noopener" class="proj-card">
+        <div class="proj-num">// 02</div>
+        <h3 class="proj-title">ML in Production for RecSys</h3>
+        <p class="proj-desc">Production-grade movie recommendation system for 1M users and 27K movies with collaborative filtering, SVD, KNN, and a complete MLOps pipeline including monitoring and CI/CD.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Airflow</span>
+          <span class="proj-tag">Docker</span>
+          <span class="proj-tag">Kubernetes</span>
+          <span class="proj-tag">MLflow</span>
+          <span class="proj-tag">Kafka</span>
         </div>
-    </section>
+        <span class="proj-link">View on GitHub →</span>
+      </a>
 
-    <!-- Experience Section -->
-    <section id="experience" class="experience fade-in">
-        <div class="container">
-            <h2 class="section-title">PROFESSIONAL EXPERIENCE</h2>
-            
-            <div class="experience-timeline">
-                <div class="experience-card">
-                    <div class="experience-header">
-                        <div class="experience-company">
-                            <h3>Carnegie Mellon University</h3>
-                            <div class="experience-role">Graduate Teaching Assistant</div>
-                        </div>
-                        <div class="experience-duration">Jan 2025 - May 2025</div>
-                    </div>
-                    <div class="experience-content">
-                        <p><strong>Machine Learning in Production / AI Engineering (17645/11695):</strong> Teaching assistant for CMU course covering how to build, deploy, assure, and maintain applications with machine-learned models. Covers responsible AI (safety, security, fairness, explainability, transparency) and MLOps.</p>
-                        <p><strong>Advanced Python (90-819):</strong> Assisted students with Python homework and projects on web scraping and API integration, evaluated assignments for data engineering applications.</p>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Docker</span>
-                            <span class="tech-tag">Kubernetes</span>
-                            <span class="tech-tag">Apache Kafka</span>
-                            <span class="tech-tag">MLflow</span>
-                            <span class="tech-tag">A/B Testing</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="experience-card">
-                    <div class="experience-header">
-                        <div class="experience-company">
-                            <h3>Vertisage Technologies</h3>
-                            <div class="experience-role">Senior Engineer</div>
-                        </div>
-                        <div class="experience-duration">Apr 2023 - Mar 2024</div>
-                    </div>
-                    <div class="experience-content">
-
-                        <ul>
-                            <li><strong>Cost Optimization Leadership:</strong> Led a team of 5 to migrate Amazon Redshift procedures to Apache Spark on Amazon EMR, reducing annual expenses by over $1 million for a US-based ad tech company</li>
-                            <li><strong>Real-Time Data Engineering:</strong> Designed and implemented a real-time Change Data Capture (CDC) pipeline using Debezium, Apache Kafka, and Apache Iceberg, eliminating full-table scans and improving data freshness from daily batches to near real-time</li>
-                            <li><strong>Incident Alerting Automation:</strong> Built a serverless, event-driven alerting pipeline using Amazon SNS, SQS, and AWS Lambda, enabling real-time email and Slack notifications for production incidents</li>
-                            <li><strong>Infrastructure Observability:</strong> Enhanced backend observability by deploying Prometheus and Grafana dashboards for real-time health monitoring and latency tracking, reducing incident response times by ~30%</li>
-                            <li><strong>CI/CD & Deployment Automation:</strong> Implemented CI/CD pipelines in GitLab with JFrog for artifact management and early failure detection, cutting release times by ~30% and improving deployment reliability</li>
-                            <li><strong>Data Lake Architecture:</strong> Built a secure AWS S3-based data lake with Glue ETL, Lambda triggers, and PySpark to process daily trending YouTube data into Parquet, enabling fast Athena queries and schema-aware ingestion</li>
-                            <li><strong>Business Intelligence Enablement:</strong> Delivered Amazon QuickSight dashboards revealing that music videos lead in likes, entertainment drives comments, and ‘People & Blogs’ dominate — helping marketing teams optimize ad spend and targeting</li>
-                            <li><strong>Low-Latency Reporting:</strong> Designed a real-time reporting layer in Snowflake using Snowpipe and star schema models, reducing data latency from 4 hours to under 5 minutes and enabling faster decision-making</li>
-                        </ul>
-
-                        <div class="tech-tags">
-                            <span class="tech-tag">Apache Spark</span>
-                            <span class="tech-tag">AWS EMR</span>
-                            <span class="tech-tag">Apache Kafka</span>
-                            <span class="tech-tag">LLMs</span>
-                            <span class="tech-tag">Delta Lake</span>
-                            <span class="tech-tag">Airflow</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="experience-card">
-                    <div class="experience-header">
-                        <div class="experience-company">
-                            <h3>Tata Consultancy Services</h3>
-                            <div class="experience-role">Data Engineer</div>
-                        </div>
-                        <div class="experience-duration">Jul 2019 - Apr 2023</div>
-                    </div>
-                    <div class="experience-content">
-                        <ul>
-                            <li><strong>Performance Tuning:</strong> Optimized Spark Scala jobs for connected vehicle telematics, using broadcasts, caching, and efficient joins to reduce cloud compute costs by 15% and deliver real-time fleet insights</li>
-                            <li><strong>Automated Data Pipelines:</strong> Built Spark ETL workflows orchestrated with Apache Airflow, ingesting 5GB+ of vehicle telemetry into AWS Athena, saving 10+ hours per week by replacing manual data loads</li>
-                            <li><strong>Data Quality & Testing:</strong> Enforced data validation standards using unit tests and Deequ, preventing regressions and cutting production data errors across ETL pipelines</li>
-                            <li><strong>Kafka Resilience Engineering:</strong> Implemented retry logic and dead-letter queues in Kafka consumers supporting TCS DynaPORT operations, improving pipeline reliability and minimizing downtime from transient failures</li>
-                            <li><strong>Fault Tolerance in Microservices:</strong> Designed circuit breakers with Istio and implemented retry/fallback mechanisms, reducing partial failure impact and cutting service downtime by ~40% at port terminals</li>
-                            <li><strong>Cloud-Native Deployments:</strong> Containerized microservices using Docker and deployed to AWS EKS with rolling updates and liveness probes, enabling seamless zero-downtime deployments across environments</li>
-                            <li><strong>Code Quality & Collaboration:</strong> Wrote unit/integration tests using Pytest, JUnit, and Mockito; participated in Agile sprints and code reviews to ensure on-time delivery and maintainable codebases</li>
-                            <li><strong>Production Support & Reliability:</strong> Owned 24/7 on-call rotation via PagerDuty, resolving critical pipeline issues under SLAs to maintain 100% data integrity for real-time analytics</li>
-                            <li><strong>Modern Data Transformation:</strong> Championed dbt adoption to replace legacy ETL, improving data model versioning, testing, and team-wide maintainability</li>
-                            <li><strong>SQL Optimization for BI:</strong> Tuned complex SQL with CTEs, window functions, and join optimization, reducing Tableau dashboard latency by 35% and accelerating stakeholder insights</li>
-                        </ul>
-                        <div class="tech-tags">
-                            <span class="tech-tag">Apache Spark</span>
-                            <span class="tech-tag">Scala</span>
-                            <span class="tech-tag">Apache Kafka</span>
-                            <span class="tech-tag">Apache Iceberg</span>
-                            <span class="tech-tag">AWS</span>
-                            <span class="tech-tag">Tableau</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <a href="#" class="proj-card">
+        <div class="proj-num">// 03</div>
+        <h3 class="proj-title">Deep Learning Artwork Restoration</h3>
+        <p class="proj-desc">Automated framework using GANs and diffusion models with ResNet generator, PatchGAN discriminator, VGG perceptual loss — trained on 8,000+ artworks with advanced data augmentation.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">PyTorch</span>
+          <span class="proj-tag">GANs</span>
+          <span class="proj-tag">AWS SageMaker</span>
+          <span class="proj-tag">Diffusion Models</span>
         </div>
-    </section>
+        <span class="proj-link">View Project →</span>
+      </a>
 
-    <!-- Skills Section -->
-    <section id="skills" class="skills fade-in">
-        <div class="container">
-            <h2 class="section-title"> SKILLS </h2>
-            <div class="skills-grid">
-                <div class="skill-category floating">
-                    <i class="fas fa-code"></i>
-                    <h3>Programming Languages</h3>
-                    <div class="skill-list">Python • Scala • Java • SQL</div>
-                </div>
-                <div class="skill-category floating">
-                    <i class="fas fa-database"></i>
-                    <h3>Databases</h3>
-                    <div class="skill-list">Oracle SQL • MongoDB • Cassandra • Redis • Neo4j</div>
-                </div>
-                <div class="skill-category floating">
-                    <i class="fas fa-project-diagram"></i>
-                    <h3>Big Data Technologies</h3>
-                    <div class="skill-list">Spark • PySpark • Kafka • Hadoop</div>
-                </div>
-                <div class="skill-category floating">
-                    <i class="fas fa-brain"></i>
-                    <h3>Analytics & ML</h3>
-                    <div class="skill-list">Hypothesis Testing • A/B Testing • Machine Learning • Deep Learning • GenAI • NLP • Survival Analysis</div>
-                </div>
-                <div class="skill-category floating">
-                    <i class="fas fa-warehouse"></i>
-                    <h3>Data Warehousing</h3>
-                    <div class="skill-list">Redshift • BigQuery • Iceberg • Hive • Trino</div>
-                </div>
-                <div class="skill-category floating">
-                    <i class="fas fa-cogs"></i>
-                    <h3>DevOps/MLOps</h3>
-                    <div class="skill-list">Docker • Airflow • Kubernetes • MLflow • Jenkins • dbt • MLflow • Prometheus • Grafana • Git</div>
-                </div>
-                <div class="skill-category floating">
-                    <i class="fas fa-cloud"></i>
-                    <h3>Cloud Platforms</h3>
-                    <div class="skill-list">AWS • GCP</div>
-                </div>
-                <div class="skill-category floating">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>BI & Visualization</h3>
-                    <div class="skill-list">Tableau • QuickSight</div>
-                </div>
-
-                <div class="skill-category floating">
-                    <i class="fas fa-project-diagram"></i>
-                    <h3>Architecture</h3>
-                    <div class="skill-list">CQRS • Backend-for-Frontend • Event-Driven Architecture • Circuit Breaker • Multithreading • Concurrency • Microservices</div>
-                </div>
-            </div>
+      <a href="https://github.com/SwastikChowdhury/Data-Intensive-Microservice-Bookstore" target="_blank" rel="noopener" class="proj-card">
+        <div class="proj-num">// 04</div>
+        <h3 class="proj-title">Scalable Bookstore Application</h3>
+        <p class="proj-desc">CQRS and microservices-based book recommendation system on AWS EKS, handling 5,000+ daily requests with event-driven workflows and 99.95% availability.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">AWS EKS</span>
+          <span class="proj-tag">Docker</span>
+          <span class="proj-tag">Kafka</span>
+          <span class="proj-tag">MongoDB</span>
+          <span class="proj-tag">Node.js</span>
         </div>
-    </section>
+        <span class="proj-link">View on GitHub →</span>
+      </a>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects fade-in">
-        <div class="container">
-            <h2 class="section-title">FEATURED PROJECTS</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>ML in Production for RecSys</h3>
-                        <p>Production-grade movie recommendation system for 1M users and 27K movies with collaborative filtering, SVD, KNN and complete MLOps pipeline including monitoring and CI/CD.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Airflow</span>
-                            <span class="tech-tag">Docker</span>
-                            <span class="tech-tag">Kubernetes</span>
-                            <span class="tech-tag">MLflow</span>
-                            <span class="tech-tag">Kafka</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/SwastikChowdhury/ML-in-Production-for-RecSys" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>Healthcare Fraud Detection</h3>
-                        <p>Robust fraud detection system with bronze-silver-gold data architecture, SMOTE for class imbalance handling, and real-time dashboard insights with asynchronous API integration.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Flask</span>
-                            <span class="tech-tag">Scikit-Learn</span>
-                            <span class="tech-tag">SMOTE</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/SwastikChowdhury/Healthcare-Fraud-Detection" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>Deep Learning Artwork Restoration</h3>
-                        <p>Automated framework using GANs and diffusion models with ResNet generator, PatchGAN discriminator, VGG perceptual loss, trained on 8,000+ artworks with advanced data augmentation.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">PyTorch</span>
-                            <span class="tech-tag">GANs</span>
-                            <span class="tech-tag">AWS SageMaker</span>
-                            <span class="tech-tag">Diffusion Models</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-book"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>Scalable Bookstore Application</h3>
-                        <p>CQRS and microservices-based book recommendation system on AWS EKS, handling 5,000+ daily requests with event-driven workflows and 99.95% availability.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">AWS EKS</span>
-                            <span class="tech-tag">Docker</span>
-                            <span class="tech-tag">Kafka</span>
-                            <span class="tech-tag">MongoDB</span>
-                            <span class="tech-tag">Node.js</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/SwastikChowdhury/Data-Intensive-Microservice-Bookstore" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-virus"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>COVID-19 Vaccine Uptake Prediction</h3>
-                        <p>ML pipeline forecasting vaccine uptake and positivity using behavioral indicators with advanced feature engineering, time-series modeling, and policy recommendations.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Pandas</span>
-                            <span class="tech-tag">Scikit-Learn</span>
-                            <span class="tech-tag">PyTorch</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/SwastikChowdhury/Predicting-COVID-19" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-video"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>YouTube Big Data Analytics</h3>
-                        <p>Built a secure data lake on AWS S3 with automated ETL using Glue and Lambda triggers. Processed unstructured data to Parquet with PySpark for fast, cost-effective querying via Athena.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">AWS S3</span>
-                            <span class="tech-tag">AWS Glue</span>
-                            <span class="tech-tag">Lambda</span>
-                            <span class="tech-tag">PySpark</span>
-                            <span class="tech-tag">Athena</span>
-                            <span class="tech-tag">QuickSight</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="https://github.com/SwastikChowdhury/Youtube-Big-Data-Analytics" target="_blank">
-                                <i class="fab fa-github"></i> GitHub
-                            </a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-image">
-                        <i class="fas fa-mobile-alt"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3>BrainBits – Android App</h3>
-                        <p>Native Android app with Java web service and MongoDB, featuring responsive UI with multi-language support, user analytics dashboard, and Dockerized deployment.</p>
-                        <div class="project-tech">
-                            <span class="tech-tag">Java</span>
-                            <span class="tech-tag">MongoDB</span>
-                            <span class="tech-tag">Android Studio</span>
-                            <span class="tech-tag">Docker</span>
-                            <span class="tech-tag">REST APIs</span>
-                        </div>
-                        <div class="project-links">
-                            <a href="#"><i class="fab fa-github"></i> GitHub</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <a href="https://github.com/SwastikChowdhury/BrainBits-AndroidApp" target="_blank" rel="noopener" class="proj-card">
+        <div class="proj-num">// 05</div>
+        <h3 class="proj-title">BrainBits — Android App</h3>
+        <p class="proj-desc">Native Android app with Java web service and MongoDB, featuring responsive UI with multi-language support, user analytics dashboard, and Dockerized deployment.</p>
+        <div class="proj-tags">
+          <span class="proj-tag">Java</span>
+          <span class="proj-tag">MongoDB</span>
+          <span class="proj-tag">Android Studio</span>
+          <span class="proj-tag">Docker</span>
+          <span class="proj-tag">REST APIs</span>
         </div>
-    </section>
+        <span class="proj-link">View on GitHub →</span>
+      </a>
+    </div>
+  </section>
 
-    <!-- Blog Section -->
-    <section id="blog" class="blog fade-in">
-        <div class="container">
-            <h2 class="section-title"> LATEST ARTICLES </h2> 
-            <div class="blog-grid">
-                <div class="blog-card">
-                    <div class="blog-date">Published on Medium</div>
-                    <h3>Change Data Capture: Debezium and Iceberg</h3>
-                    <p>During a class on Machine Learning in Production, I focused on efficient storage, scalability, and versioning of data. As a Data Engineer, I firmly believe that while models are inherently uncertain, data can always be accurate...</p>
-                    <a href="https://medium.com/@swastiksc1996/change-data-capture-debezium-and-iceberg-5c5485c9e968" class="read-more">
-                        Read on Medium <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
+  <!-- SKILLS -->
+  <section id="skills" class="section container">
+    <div class="section-tag">04 · Skills</div>
+    <h2 class="section-title">The <em>toolkit.</em></h2>
 
-                <div class="blog-card">
-                    <div class="blog-date">Published on Medium</div>
-                    <h3>Beyond the Build: The Art of Troubleshooting Data Pipelines</h3>
-                    <p> When a data pipeline fails — especially one driving critical business metrics — the impact can be immediate and far-reaching. Reports go stale, dashboards break, and decision-makers are left in the dark. These failures often happen at the worst possible times, under tight deadlines or..</p>
-                    <a href="https://medium.com/@swastiksc1996/beyond-the-build-the-art-of-troubleshooting-data-pipelines-d5338f72b03f" class="read-more">
-                        Read on Medium <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-date">Published on Medium</div>
-                    <h3>Deeque Design for Data Quality Validation in Spark</h3>
-                    <p>To ensure robust data quality (DQ) and isolate potential points of failure, Deeque should ideally be embedded at multiple checkpoints throughout the data pipeline. This allows for analyzing the state of data at each stage...</p>
-                    <a href="https://medium.com/@swastiksc1996/deeque-design-for-data-quality-validation-in-spark-ac766215f52c" class="read-more">
-                        Read on Medium <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-date">Published on Medium</div>
-                    <h3>Optimising Spark Job Output for Efficient Data Processing in AWS</h3>
-                    <p>As an AWS Architect, one of the common challenges we encounter is optimising data processing pipelines for efficiency, particularly when dealing with large volumes of data in cloud environments...</p>
-                    <a href="https://medium.com/@swastiksc1996/optimising-spark-job-output-for-efficient-data-processing-in-aws-d316de315499" class="read-more">
-                        Read on Medium <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-
-                <div class="blog-card">
-                    <div class="blog-date">Published on Medium</div>
-                    <h3>Advanced Strategies in Migrating Redshift Procedures to Apache Spark</h3>
-                    <p>This technical exploration dives into the complexities of data migration, focusing on challenges and solutions in transitioning from Amazon Redshift's SQL-based architecture to Spark's distributed computing model...</p>
-                    <a href="https://medium.com/@swastiksc1996/advanced-strategies-in-migrating-redshift-procedures-to-apache-spark-for-aws-developers-ad1bf3ada14e" class="read-more">
-                        Read on Medium <i class="fas fa-arrow-right"></i>
-                    </a>
-                </div>
-            </div>
+    <div class="skills-grid">
+      <div>
+        <div class="skill-cat-name">Programming</div>
+        <div class="skill-list">
+          <span class="skill">Python</span><span class="skill">Java</span><span class="skill">Scala</span><span class="skill">C++</span><span class="skill">SQL</span>
         </div>
-    </section>
-
-    <!-- Resume Section -->
-    <section id="resume" class="resume-section fade-in">
-        <div class="container">
-            <div class="resume-content">
-                <h2 class="section-title">Resume</h2>
-                <div class="section-subtitle" style="color: rgba(255,255,255,0.9);">Download my complete resume to learn more about my experience and qualifications</div>
-                <a href="assets/Resume_Swastik_Chowdhury.pdf" download="Swastik_Chowdhury_Resume.pdf" target="_blank" class="download-btn">
-                    <i class="fas fa-download"></i>
-                    Download Resume
-                </a>
-            </div>
+      </div>
+      <div>
+        <div class="skill-cat-name">Databases</div>
+        <div class="skill-list">
+          <span class="skill">MySQL</span><span class="skill">Redshift</span><span class="skill">Snowflake</span><span class="skill">Iceberg</span><span class="skill">Delta Lake</span><span class="skill">Presto/Trino</span>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="social-links">
-                <a href="https://linkedin.com/in/swastik-chowdhury" title="LinkedIn" target="_blank">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="https://github.com/swastikchowdhury" title="GitHub" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://medium.com/@swastiksc1996" title="Medium" target="_blank">
-                    <i class="fab fa-medium"></i>
-                </a>
-                <a href="mailto:swastiksc1996@gmail.com" title="Email">
-                    <i class="fas fa-envelope"></i>
-                </a>
-            </div>
-            <p>&copy; 2025 Swastik Chowdhury. All rights reserved.</p>
+      </div>
+      <div>
+        <div class="skill-cat-name">Data Engineering</div>
+        <div class="skill-list">
+          <span class="skill">Apache Spark</span><span class="skill">Hadoop</span><span class="skill">Kafka</span><span class="skill">Airflow</span><span class="skill">Flink</span><span class="skill">dbt</span><span class="skill">Databricks</span>
         </div>
-    </footer>
+      </div>
+      <div>
+        <div class="skill-cat-name">Cloud & DevOps</div>
+        <div class="skill-list">
+          <span class="skill">AWS</span><span class="skill">Docker</span><span class="skill">Kubernetes</span><span class="skill">Terraform</span><span class="skill">Jenkins</span><span class="skill">Prometheus</span><span class="skill">Grafana</span><span class="skill">Linux/Bash</span><span class="skill">Postman</span><span class="skill">Git</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        // Collapsible sections functionality
-        function toggleSection(sectionId) {
-            const content = document.getElementById(sectionId + '-content');
-            const arrow = document.getElementById(sectionId + '-arrow');
-            
-            if (content.classList.contains('expanded')) {
-                content.classList.remove('expanded');
-                arrow.classList.remove('rotated');
-            } else {
-                content.classList.add('expanded');
-                arrow.classList.add('rotated');
-            }
-        }
+  <!-- WRITING -->
+  <section id="writing" class="section container">
+    <div class="section-tag">05 · Writing</div>
+    <h2 class="section-title">Latest <em>articles.</em></h2>
 
-        // Background slideshow
-        (function() {
-            const backgrounds = document.querySelectorAll('#bg div');
-            let currentIndex = 0;
-            
-            // Show first background
-            backgrounds[0].classList.add('visible');
-            
-            if (backgrounds.length > 1) {
-                setInterval(() => {
-                    // Hide current background
-                    backgrounds[currentIndex].classList.remove('visible');
-                    
-                    // Move to next background
-                    currentIndex = (currentIndex + 1) % backgrounds.length;
-                    
-                    // Show next background
-                    backgrounds[currentIndex].classList.add('visible');
-                }, 6000);
-            }
-        })();
+    <div class="writing-grid">
+      <a href="#" target="_blank" rel="noopener" class="write-card">
+        <div class="write-pub">Published on Medium</div>
+        <h3 class="write-title">Change Data Capture: Debezium and Iceberg</h3>
+        <p class="write-excerpt">During a class on Machine Learning in Production, I focused on efficient storage, scalability, and versioning of data. As a Data Engineer, I firmly believe that while models are inherently uncertain, data can always be accurate…</p>
+        <span class="write-link">Read on Medium →</span>
+      </a>
 
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+      <a href="#" target="_blank" rel="noopener" class="write-card">
+        <div class="write-pub">Published on Medium</div>
+        <h3 class="write-title">Beyond the Build: The Art of Troubleshooting Data Pipelines</h3>
+        <p class="write-excerpt">When a data pipeline fails — especially one driving critical business metrics — the impact can be immediate and far-reaching. Reports go stale, dashboards break, and decision-makers are left in the dark…</p>
+        <span class="write-link">Read on Medium →</span>
+      </a>
 
-        // Scroll animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+      <a href="#" target="_blank" rel="noopener" class="write-card">
+        <div class="write-pub">Published on Medium</div>
+        <h3 class="write-title">Deeque Design for Data Quality Validation in Spark</h3>
+        <p class="write-excerpt">To ensure robust data quality (DQ) and isolate potential points of failure, Deeque should ideally be embedded at multiple checkpoints throughout the data pipeline. This allows for analyzing the state of data at each stage…</p>
+        <span class="write-link">Read on Medium →</span>
+      </a>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
+      <a href="#" target="_blank" rel="noopener" class="write-card">
+        <div class="write-pub">Published on Medium</div>
+        <h3 class="write-title">Optimising Spark Job Output for Efficient Data Processing in AWS</h3>
+        <p class="write-excerpt">As an AWS Architect, one of the common challenges we encounter is optimising data processing pipelines for efficiency, particularly when dealing with large volumes of data in cloud environments…</p>
+        <span class="write-link">Read on Medium →</span>
+      </a>
 
-        // Observe all fade-in elements
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
+      <a href="#" target="_blank" rel="noopener" class="write-card">
+        <div class="write-pub">Published on Medium</div>
+        <h3 class="write-title">Advanced Strategies in Migrating Redshift Procedures to Apache Spark</h3>
+        <p class="write-excerpt">This technical exploration dives into the complexities of data migration, focusing on challenges and solutions in transitioning from Amazon Redshift's SQL-based architecture to Spark's distributed computing model…</p>
+        <span class="write-link">Read on Medium →</span>
+      </a>
+    </div>
+  </section>
 
-        // Header background on scroll
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.98)';
-                header.style.backdropFilter = 'blur(25px) saturate(200%)';
-            } else {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-                header.style.backdropFilter = 'blur(20px) saturate(200%)';
-            }
-        });
+  <!-- EDUCATION -->
+  <section id="education" class="section container">
+    <div class="section-tag">06 · Education</div>
+    <h2 class="section-title">Where I <em>studied.</em></h2>
 
-        // Remove preload class after page load
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                document.body.classList.remove('is-preload');
-            }, 100);
-        });
+    <div class="edu-grid">
+      <div class="edu-card">
+        <div class="edu-period">AUG 2024 — AUG 2025</div>
+        <h3 class="edu-school">Carnegie Mellon University</h3>
+        <p class="edu-degree">Master of Information Systems</p>
+        <p class="edu-courses"><strong>Coursework:</strong> Machine Learning, AI Engineering (Teaching Assistant), Database Systems, Distributed Systems, DevSecOps, Data-Focused Python (Teaching Assistant), Object-Oriented Programming with Java</p>
+      </div>
+      <div class="edu-card">
+        <div class="edu-period">JUN 2015 — JUN 2019</div>
+        <h3 class="edu-school">MAKAUT</h3>
+        <p class="edu-degree">Bachelor of Technology</p>
+        <p class="edu-courses"><strong>Coursework:</strong> Computer Programming, Data Structures & C, Object-Oriented Programming, Database Management</p>
+      </div>
+    </div>
+  </section>
 
-        // Add floating animation with staggered delay
-        document.querySelectorAll('.floating').forEach((el, index) => {
-            el.style.animationDelay = `${index * 0.2}s`;
-        });
+  <!-- CONTACT / CTA -->
+  <section id="contact" class="cta container">
+    <h2 class="cta-title">Let's build something <em>useful.</em></h2>
+    <p class="cta-sub">Actively seeking full-time Data Engineering / Software Engineer roles. Based in Pittsburgh — open to relocation.</p>
+    <a href="mailto:ssamadda@alumni.cmu.edu" class="btn btn-primary">Get in Touch →</a>
+    <div class="cta-contacts">
+      <a href="mailto:ssamadda@alumni.cmu.edu" class="contact-link">✉ ssamadda@alumni.cmu.edu</a>
+      <a href="https://github.com/SwastikChowdhury" target="_blank" rel="noopener" class="contact-link">⌘ GitHub</a>
+      <a href="#" target="_blank" rel="noopener" class="contact-link">in LinkedIn</a>
+      <a href="tel:+14128441548" class="contact-link">☏ 412-844-1548</a>
+    </div>
+  </section>
 
-        // Parallax effect for hero section
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const hero = document.querySelector('.hero');
-            if (hero) {
-                hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-            }
-        });
-    </script>
+  <!-- FOOTER -->
+  <footer class="foot container">
+    SWASTIK CHOWDHURY · SOFTWARE ENGINEER · DATA · 2025
+  </footer>
+
+  <script>
+    (function(){
+      var toggle = document.getElementById('themeToggle');
+      toggle.addEventListener('click', function() {
+        var isDark = document.body.classList.contains('dark');
+        document.body.classList.toggle('dark');
+        document.body.classList.toggle('light');
+        toggle.textContent = isDark ? '◑' : '◐';
+        toggle.setAttribute('aria-label', isDark ? 'Switch to dark theme' : 'Switch to light theme');
+      });
+    })();
+  </script>
+
 </body>
 </html>
