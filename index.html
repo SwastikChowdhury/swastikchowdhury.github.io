@@ -212,6 +212,47 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
   .reveal{opacity:1;transform:none;transition:none}
 }
 
+/* ===== TYPE SCALE BUMP — readability pass ===== */
+/* Body content */
+.hero-tagline      {font-size:18px;line-height:1.85}
+.about-text p      {font-size:17px;line-height:1.9}
+.exp-bullets li    {font-size:16px;line-height:1.75}
+.proj-desc         {font-size:15px;line-height:1.75}
+.write-excerpt     {font-size:15px;line-height:1.75}
+.edu-courses       {font-size:14px;line-height:1.7}
+.cta-sub           {font-size:17px;line-height:1.8}
+
+/* Card titles — strengthen hierarchy */
+.proj-title        {font-size:22px}
+.write-title       {font-size:20px}
+.exp-role          {font-size:24px}
+.edu-school        {font-size:24px}
+.edu-degree        {font-size:15px}
+
+/* Metadata, labels, monospace bits */
+.hero-meta         {font-size:12px}
+.section-tag       {font-size:12px}
+.about-card-title  {font-size:12px}
+.about-row         {font-size:13px;padding:.8rem 0}
+.exp-period        {font-size:13px}
+.exp-loc           {font-size:13px}
+.exp-company       {font-size:13px}
+.proj-num          {font-size:12px}
+.proj-tag          {font-size:12px;padding:4px 11px}
+.proj-link         {font-size:13px}
+.write-pub         {font-size:12px}
+.write-link        {font-size:13px}
+.edu-period        {font-size:12px}
+.foot              {font-size:12px}
+
+/* Interactive elements feel more clickable */
+.btn               {font-size:14px;padding:15px 34px}
+.contact-link      {font-size:14px;padding:11px 19px}
+
+@media (max-width:600px){
+  .btn             {padding:13px 24px;font-size:13px}
+}
+   
 </style>
 </head>
 <body class="dark">
@@ -383,7 +424,7 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
         <span class="proj-link">View on GitHub →</span>
       </a>
 
-      <a href="https://github.com/SwastikChowdhury/DeepLearning-Based-Artwork-Restoration" class="proj-card">
+      <a href="https://github.com/SwastikChowdhury/DeepLearning-Based-Artwork-Restoration" target="_blank" rel="noopener" class="proj-card">
         <div class="proj-num">// 03</div>
         <h3 class="proj-title"> Artwork Restoration</h3>
         <p class="proj-desc">Automated framework using GANs and diffusion models with ResNet generator, PatchGAN discriminator, VGG perceptual loss — trained on 8,000+ artworks with advanced data augmentation.</p>
