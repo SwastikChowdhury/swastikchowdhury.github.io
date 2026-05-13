@@ -174,9 +174,54 @@ body.light{
   .nav-link:nth-of-type(n+4){display:none}
   .btn{padding:12px 22px;font-size:12px}
 }
+
+/* ===== CMD+K ===== */
+.cmdk-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding-top:14vh;animation:cmdkFade .15s ease}
+.cmdk-overlay.open{display:flex}
+body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
+.cmdk-modal{width:92%;max-width:600px;background:var(--bg);border:1px solid var(--border2);box-shadow:0 25px 60px rgba(0,0,0,.55);overflow:hidden;font-family:'Manrope',sans-serif}
+.cmdk-input-wrap{display:flex;align-items:center;gap:.75rem;padding:0 1.25rem;border-bottom:1px solid var(--border)}
+.cmdk-icon{color:var(--gold);font-family:'JetBrains Mono',monospace;font-size:14px}
+#cmdk-input{flex:1;background:transparent;border:none;padding:1.1rem 0;color:var(--text);font-family:'Manrope',sans-serif;font-size:15px;outline:none}
+#cmdk-input::placeholder{color:var(--text3)}
+.cmdk-esc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text3);padding:3px 7px;border:1px solid var(--border2);letter-spacing:.1em}
+.cmdk-list{max-height:340px;overflow-y:auto;padding:.5rem 0}
+.cmdk-item{display:flex;align-items:center;gap:.85rem;padding:.7rem 1.25rem;cursor:pointer;color:var(--text2);font-size:14px;border-left:2px solid transparent;transition:background .1s,color .1s}
+.cmdk-item .cmdk-i-icon{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--text3);width:18px;text-align:center}
+.cmdk-item .cmdk-i-name{flex:1;color:var(--text)}
+.cmdk-item .cmdk-i-kind{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.15em;color:var(--text3);text-transform:uppercase}
+.cmdk-item.active{background:var(--surface);border-left-color:var(--gold)}
+.cmdk-item.active .cmdk-i-icon{color:var(--gold)}
+.cmdk-empty{padding:2rem 1.25rem;color:var(--text3);font-size:13px;text-align:center;font-family:'JetBrains Mono',monospace;letter-spacing:.1em}
+.cmdk-footer{display:flex;gap:1.25rem;padding:.75rem 1.25rem;border-top:1px solid var(--border);font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;letter-spacing:.05em}
+.cmdk-footer kbd{font-family:'JetBrains Mono',monospace;background:var(--surface);border:1px solid var(--border);padding:1px 5px;font-size:10px;margin-right:3px;color:var(--text2)}
+.cmdk-trigger{background:transparent;border:1px solid var(--border2);color:var(--text2);cursor:pointer;padding:5px 9px;display:inline-flex;align-items:center;gap:3px;font-family:'JetBrains Mono',monospace;font-size:10px;transition:all .2s}
+.cmdk-trigger:hover{border-color:var(--gold);color:var(--gold)}
+.cmdk-trigger kbd{font-family:'JetBrains Mono',monospace;font-size:10px}
+.cmdk-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:.75rem 1.5rem;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;z-index:1001;opacity:0;transition:all .3s}
+.cmdk-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@keyframes cmdkFade{from{opacity:0}to{opacity:1}}
+@media(max-width:600px){.cmdk-overlay{padding-top:5vh}.cmdk-modal{width:95%}}
+
 </style>
 </head>
 <body class="dark">
+  <!-- Cmd+K Command Palette -->
+<div id="cmdk-overlay" class="cmdk-overlay" aria-hidden="true">
+  <div class="cmdk-modal" role="dialog" aria-label="Command palette">
+    <div class="cmdk-input-wrap">
+      <span class="cmdk-icon">⌘</span>
+      <input id="cmdk-input" type="text" placeholder="Type a command or search…" autocomplete="off" spellcheck="false" />
+      <span class="cmdk-esc">ESC</span>
+    </div>
+    <div id="cmdk-list" class="cmdk-list"></div>
+    <div class="cmdk-footer">
+      <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+      <span><kbd>↵</kbd> select</span>
+      <span><kbd>ESC</kbd> close</span>
+    </div>
+  </div>
+</div>
 
   <!-- NAV -->
   <nav class="nav">
@@ -189,6 +234,8 @@ body.light{
         <button class="nav-link" onclick="document.getElementById('writing').scrollIntoView({behavior:'smooth'})">Writing</button>
         <a class="nav-link" href="Resume_Swastik_Chowdhury.pdf" target="_blank" rel="noopener" style="text-decoration:none">Resume</a>
         <button class="nav-link" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact</button>
+        <button class="cmdk-trigger" onclick="window.openCmdK()" title="Open command palette" aria-label="Open command palette">
+  <kbd>⌘</kbd><kbd>K</kbd></button>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark">◐</button>
       </div>
     </div>
@@ -453,18 +500,119 @@ body.light{
     SWASTIK CHOWDHURY · SOFTWARE ENGINEER · DATA · 2026
   </footer>
 
-  <script>
-    (function(){
-      var toggle = document.getElementById('themeToggle');
-      toggle.addEventListener('click', function() {
-        var isDark = document.body.classList.contains('dark');
-        document.body.classList.toggle('dark');
-        document.body.classList.toggle('light');
-        toggle.textContent = isDark ? '◑' : '◐';
-        toggle.setAttribute('aria-label', isDark ? 'Switch to dark theme' : 'Switch to light theme');
-      });
-    })();
-  </script>
+<script>
+(function(){
+  /* ===== THEME TOGGLE ===== */
+  var toggle = document.getElementById('themeToggle');
+  toggle.addEventListener('click', function() {
+    var isDark = document.body.classList.contains('dark');
+    document.body.classList.toggle('dark');
+    document.body.classList.toggle('light');
+    toggle.textContent = isDark ? '◑' : '◐';
+    toggle.setAttribute('aria-label', isDark ? 'Switch to dark theme' : 'Switch to light theme');
+  });
+
+  /* ===== CMD+K COMMAND PALETTE ===== */
+  var commands = [
+    {name:'Go to About',          kind:'jump',   icon:'§',  action:function(){ scrollToSec('about'); }},
+    {name:'Go to Experience',     kind:'jump',   icon:'§',  action:function(){ scrollToSec('experience'); }},
+    {name:'Go to Projects',       kind:'jump',   icon:'§',  action:function(){ scrollToSec('projects'); }},
+    {name:'Go to Writing',        kind:'jump',   icon:'§',  action:function(){ scrollToSec('writing'); }},
+    {name:'Go to Education',      kind:'jump',   icon:'§',  action:function(){ scrollToSec('education'); }},
+    {name:'Go to Contact',        kind:'jump',   icon:'§',  action:function(){ scrollToSec('contact'); }},
+    {name:'View Resume (PDF)',    kind:'open',   icon:'⤓',  action:function(){ window.open('Resume_Swastik_Chowdhury.pdf','_blank'); }},
+    {name:'Open GitHub',          kind:'link',   icon:'⌘',  action:function(){ window.open('https://github.com/SwastikChowdhury','_blank'); }},
+    {name:'Open LinkedIn',        kind:'link',   icon:'in', action:function(){ window.open('https://www.linkedin.com/in/swastik-chowdhury/','_blank'); }},
+    {name:'Email Swastik',        kind:'action', icon:'✉',  action:function(){ window.location.href='mailto:ssamadda@alumni.cmu.edu'; }},
+    {name:'Copy Email Address',   kind:'action', icon:'⎘',  action:function(){ navigator.clipboard.writeText('ssamadda@alumni.cmu.edu'); toast('Email copied'); }},
+    {name:'Toggle Theme',         kind:'action', icon:'◐',  action:function(){ document.getElementById('themeToggle').click(); }},
+    {name:'Project: Recommendation Systems',     kind:'project', icon:'//', action:function(){ window.open('https://github.com/SwastikChowdhury/ML-in-Production-for-RecSys','_blank'); }},
+    {name:'Project: Healthcare Fraud Detection', kind:'project', icon:'//', action:function(){ window.open('https://github.com/SwastikChowdhury/Healthcare-Fraud-Detection','_blank'); }},
+    {name:'Project: Bookstore Microservices',    kind:'project', icon:'//', action:function(){ window.open('https://github.com/SwastikChowdhury/Data-Intensive-Microservice-Bookstore','_blank'); }},
+    {name:'Project: BrainBits Android App',      kind:'project', icon:'//', action:function(){ window.open('https://github.com/SwastikChowdhury/BrainBits-AndroidApp','_blank'); }}
+  ];
+
+  var overlay = document.getElementById('cmdk-overlay');
+  var input   = document.getElementById('cmdk-input');
+  var list    = document.getElementById('cmdk-list');
+  var active = 0;
+  var filtered = commands;
+
+  function scrollToSec(id){ document.getElementById(id).scrollIntoView({behavior:'smooth'}); }
+
+  function render(){
+    if(filtered.length === 0){
+      list.innerHTML = '<div class="cmdk-empty">No commands found</div>';
+      return;
+    }
+    list.innerHTML = filtered.map(function(c,i){
+      return '<div class="cmdk-item '+(i===active?'active':'')+'" data-i="'+i+'">'+
+             '<span class="cmdk-i-icon">'+c.icon+'</span>'+
+             '<span class="cmdk-i-name">'+c.name+'</span>'+
+             '<span class="cmdk-i-kind">'+c.kind+'</span></div>';
+    }).join('');
+    Array.prototype.forEach.call(list.querySelectorAll('.cmdk-item'), function(el){
+      el.addEventListener('mouseenter', function(){ active = parseInt(el.dataset.i,10); render(); });
+      el.addEventListener('click',      function(){ runCommand(parseInt(el.dataset.i,10)); });
+    });
+    var a = list.querySelector('.cmdk-item.active');
+    if(a) a.scrollIntoView({block:'nearest'});
+  }
+
+  function openPalette(){
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+    input.value = '';
+    filtered = commands;
+    active = 0;
+    render();
+    setTimeout(function(){ input.focus(); }, 50);
+  }
+  function closePalette(){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+  }
+  function filterCmds(q){
+    q = q.toLowerCase().trim();
+    filtered = !q ? commands : commands.filter(function(c){
+      return c.name.toLowerCase().indexOf(q) > -1 || c.kind.toLowerCase().indexOf(q) > -1;
+    });
+    active = 0;
+    render();
+  }
+  function runCommand(i){
+    if(filtered[i]){ closePalette(); setTimeout(filtered[i].action, 120); }
+  }
+  function toast(msg){
+    var t = document.createElement('div');
+    t.className = 'cmdk-toast';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function(){ t.classList.add('show'); }, 10);
+    setTimeout(function(){ t.classList.remove('show'); setTimeout(function(){ t.remove(); }, 300); }, 1600);
+  }
+
+  window.openCmdK = openPalette;
+
+  document.addEventListener('keydown', function(e){
+    if((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k'){
+      e.preventDefault(); openPalette(); return;
+    }
+    if(e.key === '/' && !overlay.classList.contains('open')){
+      var t = document.activeElement.tagName;
+      if(t !== 'INPUT' && t !== 'TEXTAREA'){ e.preventDefault(); openPalette(); return; }
+    }
+    if(!overlay.classList.contains('open')) return;
+    if(e.key === 'Escape'){ e.preventDefault(); closePalette(); }
+    else if(e.key === 'ArrowDown'){ e.preventDefault(); active = Math.min(active+1, filtered.length-1); render(); }
+    else if(e.key === 'ArrowUp'){   e.preventDefault(); active = Math.max(active-1, 0);                  render(); }
+    else if(e.key === 'Enter'){     e.preventDefault(); runCommand(active); }
+  });
+
+  input.addEventListener('input', function(e){ filterCmds(e.target.value); });
+  overlay.addEventListener('click', function(e){ if(e.target === overlay) closePalette(); });
+})();
+</script>
 
 </body>
 </html>
