@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Swastik Chowdhury — Software Engineer · Data</title>
-<meta name="description" content="Portfolio of Swastik Chowdhury — Software Engineer · Data. CMU Graduate." />
+<title>Swastik Chowdhury — Software Engineer</title>
+<meta name="description" content="Portfolio of Swastik Chowdhury — Software Engineer. CMU Graduate." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Manrope:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -213,7 +213,6 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 }
 
 /* ===== TYPE SCALE BUMP — readability pass ===== */
-/* Body content */
 .hero-tagline      {font-size:18px;line-height:1.85}
 .about-text p      {font-size:17px;line-height:1.9}
 .exp-bullets li    {font-size:16px;line-height:1.75}
@@ -222,14 +221,12 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 .edu-courses       {font-size:14px;line-height:1.7}
 .cta-sub           {font-size:17px;line-height:1.8}
 
-/* Card titles — strengthen hierarchy */
 .proj-title        {font-size:22px}
 .write-title       {font-size:20px}
 .exp-role          {font-size:24px}
 .edu-school        {font-size:24px}
 .edu-degree        {font-size:15px}
 
-/* Metadata, labels, monospace bits */
 .hero-meta         {font-size:12px}
 .section-tag       {font-size:12px}
 .about-card-title  {font-size:12px}
@@ -245,14 +242,12 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 .edu-period        {font-size:12px}
 .foot              {font-size:12px}
 
-/* Interactive elements feel more clickable */
 .btn               {font-size:14px;padding:15px 34px}
 .contact-link      {font-size:14px;padding:11px 19px}
 
 @media (max-width:600px){
   .btn             {padding:13px 24px;font-size:13px}
 }
-   
 </style>
 </head>
 <body class="dark">
@@ -295,7 +290,7 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
   <section class="hero container">
     <div class="hero-meta fade-up d1">PORTFOLIO · PITTSBURGH, PA</div>
     <h1 class="hero-name fade-up d2">Swastik<br>Chowdhury<span class="dot">.</span></h1>
-    <p class="hero-title fade-up d3">Software Engineer · Data</p>
+    <p class="hero-title fade-up d3">Software Engineer</p>
     <p class="hero-tagline fade-up d4">
       Carnegie Mellon · 5+ years building <strong>production systems</strong>.
     </p>
@@ -343,6 +338,7 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
     <div class="section-tag"> Experience </div>
     <h2 class="section-title">The things I've <em>built</em></h2>
 
+    <!-- National Transfer Network -->
     <div class="exp-entry">
       <div>
         <div class="exp-period">OCT 2025 — PRESENT</div>
@@ -351,40 +347,48 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
         <h3 class="exp-role">Data Science</h3>
         <div class="exp-company">National Transfer Network</div>
         <ul class="exp-bullets">
-          <li>Built a <strong>RAG system</strong> over internal company documentation and unstructured data, giving students natural-language access to institutional knowledge.</li>
-          <li>Implemented semantic retrieval with <strong>ChromaDB</strong> and built an evaluation pipeline to compare embedding models and reduce hallucinations, using the results to select the best-performing configuration.</li>
+          <li>Built a <strong>RAG system</strong> over internal company documents with <strong>Redis caching</strong>, giving users natural-language access to institutional knowledge at <strong>1.7s p95 latency</strong>.</li>
+          <li>Implemented semantic retrieval with <strong>ChromaDB</strong> and an evaluation pipeline to compare embedding models and integrate <strong>DeBERTa-based hallucination detection</strong>, achieving <strong>87% exact match</strong> and <strong>92% F1</strong>.</li>
         </ul>
       </div>
     </div>
 
+    <!-- Vertisage Technologies -->
     <div class="exp-entry">
       <div>
         <div class="exp-period">APR 2023 — MAR 2024</div>
       </div>
       <div>
-        <h3 class="exp-role">Software Engineer · Data</h3>
+        <h3 class="exp-role">Software Engineer</h3>
         <div class="exp-company">Vertisage Technologies</div>
         <ul class="exp-bullets">
           <li>Developed a financial invoice data extraction pipeline using <strong>LlamaIndex, Pydantic, and AWS Textract OCR</strong> — transforming semi-structured PDFs into schema-validated Parquet tables.</li>
           <li>Led migration of 80+ legacy Redshift MPP stored procedures to Apache Spark (Python) ETL on EMR with Airflow orchestration, cutting annual infrastructure cost by <strong>$1M+</strong> and reducing job runtime by <strong>40%</strong> while maintaining full data correctness.</li>
-          <li>Implemented a <strong>Debezium-based Change Data Capture</strong> pipeline writing to Iceberg tables on S3, delivering sub-5-minute updates to fraud analytics datasets consumed by the Risk team.</li>
+          <li>Implemented a <strong>Debezium-based Change Data Capture</strong> pipeline writing to Iceberg tables on S3 through Kafka connector, delivering sub-5-minute updates to fraud analytics datasets consumed by the Risk team.</li>
           <li>Built event-driven monitoring and automated alerting with SNS / SQS / Lambda, reducing MTTD and improving SLA adherence from 95% to <strong>99.5%</strong> for user behavioral telemetry datasets.</li>
+          <li>Integrated <strong>Mixpanel analytics</strong> into the React.js frontend to capture engagement and session flows, enabling the product team to drive data-backed UX improvements.</li>
+          <li>Created internal automation and API services using <strong>Python and Django REST Framework</strong> to support backend operations, reducing manual effort and simplifying cross-team integrations.</li>
+          <li>Built <strong>Spark Scala ETL pipelines</strong> with Airflow ingesting <strong>5+ GB/day</strong> of user-interaction JSON events into S3 from Kinesis, partitioning by date and event type to cut Athena scan volumes and query costs by 40% and drop analyst query latency from minutes to seconds.</li>
         </ul>
       </div>
     </div>
 
+    <!-- TCS -->
     <div class="exp-entry">
       <div>
         <div class="exp-period">JUL 2019 — APR 2023</div>
       </div>
       <div>
-        <h3 class="exp-role">Software Engineer · Data</h3>
+        <h3 class="exp-role">Software Engineer</h3>
         <div class="exp-company">Tata Consultancy Services</div>
         <ul class="exp-bullets">
+          <li>Built and optimized <strong>Elasticsearch-backed Node.js APIs</strong> supporting 500K+ daily users; tuned queries and caching to deliver <strong>20ms response times</strong> at scale.</li>
+          <li>Developed an extensive library of reusable components shared across projects using <strong>React.js and TypeScript</strong>, reducing code redundancy and improving development speed.</li>
           <li>Optimized Apache Spark (Python) ETL by diagnosing data skew via Spark UI stage metrics and applying salting and broadcast joins — cutting runtime by <strong>40%</strong> and cloud compute cost by 15% across production pipelines.</li>
           <li>Owned primary <strong>on-call rotation for 25+ production Spark/Airflow pipelines</strong> serving 4 downstream teams; authored runbooks and automated recurring failure modes to cut repeat incidents by 60% and reduce MTTR from 45 min to 15 min.</li>
           <li>Built Apache Spark (Python) ETL pipelines with Airflow ingesting <strong>5+ GB/day</strong> of user-interaction JSON events into S3, partitioning by date and event type — cutting Athena scan volumes and query costs by 40% and dropping analyst query latency from minutes to seconds.</li>
           <li>Designed dimensional data marts using <strong>dbt incremental models and Snowflake clustering strategies</strong>, improving reporting performance and reducing warehouse compute costs by 20%.</li>
+          <li>Delivered secure, compliant APIs with <strong>schema validation and TDD (JUnit, Postman)</strong> in a regulated fintech environment; reduced integration errors by 40% and ensured adherence to cloud security best practices.</li>
         </ul>
       </div>
     </div>
@@ -395,8 +399,7 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
     <div class="section-tag"> Projects</div>
     <h2 class="section-title">Things I've <em>shipped.</em></h2>
 
-    
-     <div class="proj-grid">
+    <div class="proj-grid">
       <a href="https://github.com/SwastikChowdhury/ML-in-Production-for-RecSys" target="_blank" rel="noopener" class="proj-card">
         <div class="proj-num">// 01</div>
         <h3 class="proj-title">Recommendation Systems</h3>
@@ -434,7 +437,7 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
           <span class="proj-tag">AWS SageMaker</span>
           <span class="proj-tag">Diffusion Models</span>
         </div>
-        <span class="proj-link">View Project →</span>
+        <span class="proj-link">View on GitHub →</span>
       </a>
 
       <a href="https://github.com/SwastikChowdhury/Data-Intensive-Microservice-Bookstore" target="_blank" rel="noopener" class="proj-card">
@@ -664,16 +667,13 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 })();
 </script>
 
-
 <script>
 (function(){
-  // Bail out if no IntersectionObserver or user prefers reduced motion
   if (!('IntersectionObserver' in window) ||
       window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return;
   }
 
-  // Helper: stagger children inside each parent matching selector
   function staggerChildren(parentSel, childSel, stepMs){
     document.querySelectorAll(parentSel).forEach(function(parent){
       parent.querySelectorAll(childSel).forEach(function(child, i){
@@ -683,13 +683,11 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
     });
   }
 
-  // Cascading reveals inside grids/lists
   staggerChildren('.proj-grid',    '.proj-card',  80);
   staggerChildren('.writing-grid', '.write-card', 80);
   staggerChildren('.edu-grid',     '.edu-card',  100);
   staggerChildren('.exp-bullets',  'li',          55);
 
-  // Standalone reveal elements (no stagger by default)
   var solo = [
     '.section-tag',
     '.section-title',
@@ -705,13 +703,11 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
     });
   });
 
-  // About paragraphs/blockquote with their own gentle stagger
   document.querySelectorAll('.about-text > p, .about-text > blockquote').forEach(function(el, i){
     el.classList.add('reveal');
     el.style.setProperty('--stagger', (i * 70) + 'ms');
   });
 
-  // Observe and reveal once
   var observer = new IntersectionObserver(function(entries){
     entries.forEach(function(entry){
       if (entry.isIntersecting) {
