@@ -71,11 +71,3 @@ Then in index.html temporarily set:
 ```js
 var BACKEND_URL = "http://localhost:3000";
 ```
-
----
-
-## Cost estimate
-- Claude Haiku is ~$0.25 per million input tokens
-- A typical chat conversation = ~2,000 tokens
-- 1,000 recruiter conversations ≈ $0.50
-- Essentially free for a portfolio
