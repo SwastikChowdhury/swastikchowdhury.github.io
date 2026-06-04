@@ -947,13 +947,7 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
   var isTyping = false;
 
   // Welcome message
-appendMsg(
-  "bot",
-  "Hey there Visitor.\n\n
-  I am Swastik's personal assistant.\n
-  Ask me anything about his skills, experience, projects, or background.\n
-  I am happy to help!"
-);
+  appendMsg("bot", "Hey there 👋 I am Swastik's Portfolio assistant. Ask me anything about his skills, experience, projects, or background . I am here to help!");
 
   // Toggle panel
   bubble.addEventListener("click", function(){
@@ -1006,7 +1000,7 @@ appendMsg(
     })
     .catch(function(err){
       removeTyping();
-      appendMsg("bot", "⚠️ I'm having trouble connecting right now. Please try again in a moment, or reach out to Swastik directly at ssamadda@alumni.cmu.edu.");
+      appendMsg("bot", "⚠️ I am having trouble connecting right now. Please try again in a moment, or reach out to Swastik directly at ssamadda@alumni.cmu.edu.");
       console.error("Chat error:", err);
     })
     .finally(function(){
