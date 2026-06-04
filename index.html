@@ -750,7 +750,7 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 /* --- Panel --- */
 .chat-panel{
   position:fixed;bottom:6.5rem;right:2rem;z-index:900;
-  width:460px;max-width:calc(100vw - 2rem);resize:both;overflow:auto;min-width:320px;min-height:480px;
+  width:420px;max-width:calc(100vw - 2rem);
   background:var(--surface);border:1px solid var(--border2);
   box-shadow:0 16px 48px rgba(0,0,0,.55);
   display:flex;flex-direction:column;
@@ -761,6 +761,8 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
   overflow:hidden;
 }
 .chat-panel.open{opacity:1;pointer-events:all;transform:translateY(0)}
+.chat-panel.expanded{width:600px;max-width:calc(100vw - 2rem)}
+.chat-panel.expanded .chat-messages{max-height:560px}
 
 /* --- Header --- */
 .chat-header{
@@ -778,6 +780,8 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
   color:var(--bg);flex-shrink:0;
 }
 .chat-header-name{font-family:'Playfair Display',serif;font-weight:700;font-size:14px;color:var(--text)}
+.chat-expand-btn{margin-left:auto;background:transparent;border:1px solid var(--border2);color:var(--text3);width:28px;height:28px;border-radius:2px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:all .2s}
+.chat-expand-btn:hover{border-color:var(--gold);color:var(--gold)}
 .chat-header-status{
   font-family:'JetBrains Mono',monospace;font-size:10px;color:#22c55e;
   letter-spacing:.1em;display:flex;align-items:center;gap:5px;margin-top:2px;
@@ -968,6 +972,16 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 
   // Welcome message
   appendBotMsg("Hi there 👋 I'm Swastik's portfolio assistant. I have detailed knowledge of his experience, projects, skills, and writing — ask me anything!");
+
+  // Expand toggle
+  var expandBtn = document.getElementById("chatExpandBtn");
+  var isExpanded = false;
+  expandBtn.addEventListener("click", function(){
+    isExpanded = !isExpanded;
+    panel.classList.toggle("expanded", isExpanded);
+    expandBtn.textContent = isExpanded ? "⤡" : "⤢";
+    expandBtn.title = isExpanded ? "Shrink chat" : "Expand chat";
+  });
 
   // Toggle
   bubble.addEventListener("click", function(){
