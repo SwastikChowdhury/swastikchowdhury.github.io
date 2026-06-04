@@ -729,7 +729,8 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 </body>
 </html>
 
-<!-- ========== RECRUITER CHATBOT WIDGET ========== -->
+
+<!-- ========== RECRUITER CHATBOT WIDGET v2 (RAG + rich formatting) ========== -->
 <style>
 /* --- Bubble trigger --- */
 .chat-bubble{
@@ -749,7 +750,7 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 /* --- Panel --- */
 .chat-panel{
   position:fixed;bottom:6.5rem;right:2rem;z-index:900;
-  width:360px;max-width:calc(100vw - 2rem);
+  width:460px;max-width:calc(100vw - 2rem);resize:both;overflow:auto;min-width:320px;min-height:480px;
   background:var(--surface);border:1px solid var(--border2);
   box-shadow:0 16px 48px rgba(0,0,0,.55);
   display:flex;flex-direction:column;
@@ -761,12 +762,13 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 }
 .chat-panel.open{opacity:1;pointer-events:all;transform:translateY(0)}
 
-/* --- Panel header --- */
+/* --- Header --- */
 .chat-header{
   padding:1rem 1.25rem;
   border-bottom:1px solid var(--border);
   background:var(--surface2);
   display:flex;align-items:center;gap:.75rem;
+  flex-shrink:0;
 }
 .chat-header-avatar{
   width:36px;height:36px;border-radius:50%;
@@ -775,51 +777,75 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
   font-family:'Playfair Display',serif;font-weight:700;font-size:15px;
   color:var(--bg);flex-shrink:0;
 }
-.chat-header-info{}
-.chat-header-name{
-  font-family:'Playfair Display',serif;font-weight:700;font-size:14px;color:var(--text);
-}
+.chat-header-name{font-family:'Playfair Display',serif;font-weight:700;font-size:14px;color:var(--text)}
 .chat-header-status{
-  font-family:'JetBrains Mono',monospace;font-size:10px;color:#22c55e;letter-spacing:.1em;
-  display:flex;align-items:center;gap:5px;margin-top:2px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:#22c55e;
+  letter-spacing:.1em;display:flex;align-items:center;gap:5px;margin-top:2px;
 }
 .chat-header-status::before{
   content:'';display:inline-block;width:6px;height:6px;
   background:#22c55e;border-radius:50%;box-shadow:0 0 0 2px rgba(34,197,94,.25);
 }
 
-/* --- Messages --- */
+/* --- Messages area --- */
 .chat-messages{
   flex:1;overflow-y:auto;padding:1rem;
-  display:flex;flex-direction:column;gap:.75rem;
-  min-height:280px;max-height:340px;
+  display:flex;flex-direction:column;gap:.85rem;
+  min-height:360px;max-height:480px;
   scroll-behavior:smooth;
 }
-.chat-msg{
-  display:flex;flex-direction:column;
-  max-width:85%;
-  animation:msgIn .2s ease;
-}
+
+/* --- Individual message --- */
+.chat-msg{display:flex;flex-direction:column;max-width:90%;animation:msgIn .2s ease}
 @keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 .chat-msg.user{align-self:flex-end;align-items:flex-end}
-.chat-msg.bot{align-self:flex-start;align-items:flex-start}
+.chat-msg.bot{align-self:flex-start;align-items:flex-start;max-width:95%}
+
 .chat-msg-bubble{
-  padding:.6rem .9rem;
-  font-size:13.5px;line-height:1.65;
-  border-radius:3px;
-  word-break:break-word;
+  padding:.7rem 1rem;font-size:13.5px;line-height:1.7;
+  border-radius:3px;word-break:break-word;
 }
 .chat-msg.user .chat-msg-bubble{
-  background:var(--gold);color:var(--bg);
-  font-family:'Manrope',sans-serif;
+  background:var(--gold);color:var(--bg);font-family:'Manrope',sans-serif;
 }
 .chat-msg.bot .chat-msg-bubble{
   background:var(--surface2);color:var(--text);
-  border:1px solid var(--border);
-  font-family:'Manrope',sans-serif;
+  border:1px solid var(--border);font-family:'Manrope',sans-serif;
 }
 
-/* Typing dots */
+/* Rich text inside bot bubbles */
+.chat-msg.bot .chat-msg-bubble strong{color:var(--gold);font-weight:600}
+.chat-msg.bot .chat-msg-bubble em{font-style:italic;color:var(--text2)}
+.chat-msg.bot .chat-msg-bubble p{margin-bottom:.6rem}
+.chat-msg.bot .chat-msg-bubble p:last-child{margin-bottom:0}
+.chat-msg.bot .chat-msg-bubble ul{margin:.4rem 0 .6rem 1rem;display:flex;flex-direction:column;gap:.3rem}
+.chat-msg.bot .chat-msg-bubble ul li{list-style:none;position:relative;padding-left:14px}
+.chat-msg.bot .chat-msg-bubble ul li::before{content:'—';position:absolute;left:0;color:var(--gold)}
+.chat-msg.bot .chat-msg-bubble a{color:var(--gold);text-decoration:underline;word-break:break-all}
+.chat-msg.bot .chat-msg-bubble hr{border:none;border-top:1px solid var(--border);margin:.75rem 0}
+
+/* Follow-up question chips rendered inside the bubble */
+.chat-followups{
+  display:flex;flex-direction:column;gap:.4rem;
+  margin-top:.75rem;padding-top:.75rem;
+  border-top:1px solid var(--border);
+}
+.chat-followup-label{
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+  color:var(--text3);letter-spacing:.15em;text-transform:uppercase;
+  margin-bottom:.2rem;
+}
+.chat-followup-chip{
+  font-family:'Manrope',sans-serif;font-size:12.5px;
+  padding:6px 11px;border:1px solid var(--border2);
+  background:transparent;color:var(--text2);cursor:pointer;
+  border-radius:2px;transition:all .2s;text-align:left;
+  display:flex;align-items:center;gap:6px;
+}
+.chat-followup-chip::before{content:'↗';color:var(--gold);font-size:11px;flex-shrink:0}
+.chat-followup-chip:hover{border-color:var(--gold);color:var(--gold);background:var(--gold-soft)}
+
+/* Typing indicator */
 .chat-typing{align-self:flex-start}
 .chat-typing-dots{
   display:flex;align-items:center;gap:4px;
@@ -834,27 +860,28 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 .chat-typing-dots span:nth-child(3){animation-delay:.3s}
 @keyframes dot-bounce{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
 
-/* --- Suggestions --- */
+/* Seed suggestions (shown before first message) */
 .chat-suggestions{
   display:flex;flex-wrap:wrap;gap:.4rem;
   padding:.75rem 1rem .5rem;
   border-top:1px solid var(--border);
+  flex-shrink:0;
 }
 .chat-suggestion{
   font-family:'JetBrains Mono',monospace;font-size:11px;
   padding:4px 10px;border:1px solid var(--border2);
   background:transparent;color:var(--text2);cursor:pointer;
-  border-radius:2px;transition:all .2s;
-  white-space:nowrap;
+  border-radius:2px;transition:all .2s;white-space:nowrap;
 }
 .chat-suggestion:hover{border-color:var(--gold);color:var(--gold)}
 
-/* --- Input row --- */
+/* Input row */
 .chat-input-row{
   display:flex;align-items:center;gap:.5rem;
   padding:.75rem 1rem;
   border-top:1px solid var(--border);
   background:var(--surface);
+  flex-shrink:0;
 }
 #chat-input{
   flex:1;background:var(--surface2);border:1px solid var(--border);
@@ -874,82 +901,75 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
 #chat-send svg{width:16px;height:16px;fill:var(--bg)}
 #chat-send:disabled{opacity:.4;cursor:not-allowed}
 
-/* --- Footer note --- */
 .chat-footer-note{
   text-align:center;padding:.4rem;
   font-family:'JetBrains Mono',monospace;font-size:10px;
   color:var(--text3);letter-spacing:.05em;
-  border-top:1px solid var(--border);
+  border-top:1px solid var(--border);flex-shrink:0;
 }
 
 @media(max-width:480px){
   .chat-panel{right:1rem;bottom:5.5rem;width:calc(100vw - 2rem)}
   .chat-bubble{right:1rem;bottom:1rem}
+  .chat-messages{max-height:320px}
 }
 </style>
 
-<!-- Bubble button -->
+<!-- Bubble -->
 <button class="chat-bubble" id="chatBubble" aria-label="Open portfolio assistant">
-  <svg class="chat-open-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-2 10H6V10h12v2zm0-3H6V7h12v2z"/>
-  </svg>
-  <svg class="chat-close-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-  </svg>
+  <svg class="chat-open-icon" viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-2 10H6V10h12v2zm0-3H6V7h12v2z"/></svg>
+  <svg class="chat-close-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
 </button>
 
-<!-- Chat panel -->
+<!-- Panel -->
 <div class="chat-panel" id="chatPanel" role="dialog" aria-label="Portfolio assistant">
   <div class="chat-header">
     <div class="chat-header-avatar">SC</div>
-    <div class="chat-header-info">
+    <div>
       <div class="chat-header-name">Swastik's Assistant</div>
       <div class="chat-header-status">online · ask me anything</div>
     </div>
   </div>
 
-  <div class="chat-messages" id="chatMessages">
-    <!-- Seeded with a welcome message via JS -->
-  </div>
+  <div class="chat-messages" id="chatMessages"></div>
 
   <div class="chat-suggestions" id="chatSuggestions">
-    <button class="chat-suggestion" onclick="sendSuggestion(this)">What's Swastik's tech stack?</button>
+    <button class="chat-suggestion" onclick="sendSuggestion(this)">What's his tech stack?</button>
     <button class="chat-suggestion" onclick="sendSuggestion(this)">Tell me about his experience</button>
-    <button class="chat-suggestion" onclick="sendSuggestion(this)">Is he open to relocation?</button>
+    <button class="chat-suggestion" onclick="sendSuggestion(this)">Open to relocation?</button>
     <button class="chat-suggestion" onclick="sendSuggestion(this)">What projects has he built?</button>
+    <button class="chat-suggestion" onclick="sendSuggestion(this)">His biggest impact?</button>
   </div>
 
   <div class="chat-input-row">
-    <input id="chat-input" type="text" placeholder="Ask about Swastik…" autocomplete="off" maxlength="300" />
+    <input id="chat-input" type="text" placeholder="Ask about Swastik…" autocomplete="off" maxlength="300"/>
     <button id="chat-send" aria-label="Send">
       <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
     </button>
   </div>
-  <div class="chat-footer-note">Powered by Claude · Swastik's portfolio assistant</div>
+  <div class="chat-footer-note">Powered by Claude · RAG over Swastik's full profile</div>
 </div>
 
 <script>
 (function(){
-  // ── CONFIG ──────────────────────────────────────────────────────────────
-  // Replace this with your deployed backend URL after deploying to Vercel/Railway.
-  // e.g. "https://swastik-chatbot.vercel.app"
-  // During local dev with the backend running on port 3000, use "http://localhost:3000"
+  // ── CONFIG — replace with your Vercel URL ──────────────────
   var BACKEND_URL = "https://chatbot-backend-ivory-five.vercel.app";
-  // ────────────────────────────────────────────────────────────────────────
+  // ──────────────────────────────────────────────────────────
 
-  var bubble   = document.getElementById("chatBubble");
-  var panel    = document.getElementById("chatPanel");
-  var msgBox   = document.getElementById("chatMessages");
-  var input    = document.getElementById("chat-input");
-  var sendBtn  = document.getElementById("chat-send");
-  var history  = []; // [{role:"user"|"assistant", content:"..."}]
-  var isOpen   = false;
+  var bubble  = document.getElementById("chatBubble");
+  var panel   = document.getElementById("chatPanel");
+  var msgBox  = document.getElementById("chatMessages");
+  var input   = document.getElementById("chat-input");
+  var sendBtn = document.getElementById("chat-send");
+  var suggestions = document.getElementById("chatSuggestions");
+  var history = [];
+  var isOpen  = false;
   var isTyping = false;
 
   // Welcome message
-  appendMsg("bot", "Hey there 👋 I am Swastik's Portfolio assistant. Ask me anything about his skills, experience, projects, or background . I am here to help!");
+  appendBotMsg("Hi there 👋 I'm Swastik's portfolio assistant. I have detailed knowledge of his experience, projects, skills, and writing — ask me anything!");
 
-  // Toggle panel
+  // Toggle
   bubble.addEventListener("click", function(){
     isOpen = !isOpen;
     panel.classList.toggle("open", isOpen);
@@ -957,7 +977,6 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
     if(isOpen) setTimeout(function(){ input.focus(); }, 250);
   });
 
-  // Send on Enter
   input.addEventListener("keydown", function(e){
     if(e.key === "Enter" && !e.shiftKey){ e.preventDefault(); handleSend(); }
   });
@@ -971,14 +990,12 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
   }
 
   window.sendSuggestion = function(btn){
-    var text = btn.textContent.trim();
-    // Hide suggestions after first use
-    document.getElementById("chatSuggestions").style.display = "none";
-    sendMessage(text);
+    suggestions.style.display = "none";
+    sendMessage(btn.textContent.trim());
   };
 
   function sendMessage(text){
-    appendMsg("user", text);
+    appendUserMsg(text);
     history.push({role:"user", content:text});
     showTyping();
     setDisabled(true);
@@ -996,11 +1013,11 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
       removeTyping();
       var reply = data.reply || "Sorry, I couldn't get a response. Please try again.";
       history.push({role:"assistant", content:reply});
-      appendMsg("bot", reply);
+      appendBotMsg(reply);
     })
     .catch(function(err){
       removeTyping();
-      appendMsg("bot", "⚠️ I am having trouble connecting right now. Please try again in a moment, or reach out to Swastik directly at ssamadda@alumni.cmu.edu.");
+      appendBotMsg("⚠️ Trouble connecting right now. Reach out to Swastik directly at ssamadda@alumni.cmu.edu or 412-844-1548.");
       console.error("Chat error:", err);
     })
     .finally(function(){
@@ -1009,15 +1026,99 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
     });
   }
 
-  function appendMsg(role, text){
+  // ── Render user bubble ─────────────────────────────────────
+  function appendUserMsg(text){
     var wrap = document.createElement("div");
-    wrap.className = "chat-msg " + role;
-    var bubble = document.createElement("div");
-    bubble.className = "chat-msg-bubble";
-    bubble.textContent = text;
-    wrap.appendChild(bubble);
+    wrap.className = "chat-msg user";
+    var bub = document.createElement("div");
+    bub.className = "chat-msg-bubble";
+    bub.textContent = text;
+    wrap.appendChild(bub);
     msgBox.appendChild(wrap);
-    msgBox.scrollTop = msgBox.scrollHeight;
+    scrollBottom();
+  }
+
+  // ── Render bot bubble with rich formatting ─────────────────
+  function appendBotMsg(text){
+    var wrap = document.createElement("div");
+    wrap.className = "chat-msg bot";
+    var bub = document.createElement("div");
+    bub.className = "chat-msg-bubble";
+
+    // Split off the follow-up questions using FOLLOWUPS: format
+    var followupMatch = text.match(/FOLLOWUPS:\s*(.+)$/m);
+    var mainText = text.replace(/FOLLOWUPS:.+$/m, "").trim();
+    var followupQuestions = followupMatch ? followupMatch[1].split("|").map(function(q){ return q.trim(); }).filter(Boolean) : [];
+
+    // Render main text as simple markdown
+    bub.innerHTML = renderMarkdown(mainText);
+
+    // Render follow-up chips if present
+    if(followupQuestions.length > 0){
+      var lines = followupQuestions;
+      if(lines.length > 0){
+        var fwDiv = document.createElement("div");
+        fwDiv.className = "chat-followups";
+        var label = document.createElement("div");
+        label.className = "chat-followup-label";
+        label.textContent = "You might also want to ask";
+        fwDiv.appendChild(label);
+        lines.forEach(function(q){
+          var chip = document.createElement("button");
+          chip.className = "chat-followup-chip";
+          chip.textContent = q;
+          chip.addEventListener("click", function(){
+            // Remove chips after clicking so they don't repeat
+            fwDiv.remove();
+            sendMessage(q);
+          });
+          fwDiv.appendChild(chip);
+        });
+        bub.appendChild(fwDiv);
+      }
+    }
+
+    wrap.appendChild(bub);
+    msgBox.appendChild(wrap);
+    scrollBottom();
+  }
+
+  // ── Lightweight markdown renderer ─────────────────────────
+  function renderMarkdown(text){
+    // Escape HTML first
+    var escaped = text
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;");
+
+    // Bold
+    escaped = escaped.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    // Italic
+    escaped = escaped.replace(/\*(.+?)\*/g, "<em>$1</em>");
+    // URLs → links
+    escaped = escaped.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>');
+
+    // Process line by line for lists and paragraphs
+    var lines = escaped.split("\n");
+    var html = "";
+    var inList = false;
+
+    for(var i = 0; i < lines.length; i++){
+      var line = lines[i].trim();
+      if(!line){
+        if(inList){ html += "</ul>"; inList = false; }
+        continue;
+      }
+      if(/^[-*]\s+/.test(lines[i])){
+        if(!inList){ html += "<ul>"; inList = true; }
+        html += "<li>" + line.replace(/^[-*]\s+/, "") + "</li>";
+      } else {
+        if(inList){ html += "</ul>"; inList = false; }
+        html += "<p>" + line + "</p>";
+      }
+    }
+    if(inList) html += "</ul>";
+    return html;
   }
 
   function showTyping(){
@@ -1027,7 +1128,7 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
     wrap.id = "typingIndicator";
     wrap.innerHTML = '<div class="chat-typing-dots"><span></span><span></span><span></span></div>';
     msgBox.appendChild(wrap);
-    msgBox.scrollTop = msgBox.scrollHeight;
+    scrollBottom();
   }
 
   function removeTyping(){
@@ -1039,6 +1140,10 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
   function setDisabled(val){
     sendBtn.disabled = val;
     input.disabled   = val;
+  }
+
+  function scrollBottom(){
+    msgBox.scrollTop = msgBox.scrollHeight;
   }
 })();
 </script>
