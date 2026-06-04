@@ -1,4 +1,4 @@
-# Swastik Portfolio Chatbot — Backend
+# Swastik Portfolio Chatbot
 
 A lightweight Node.js proxy that sits between your portfolio and the Anthropic API,
 keeping your API key secret while powering the recruiter chatbot widget.
