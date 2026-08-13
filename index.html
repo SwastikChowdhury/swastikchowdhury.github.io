@@ -338,21 +338,6 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
     <div class="section-tag"> Experience </div>
     <h2 class="section-title">The things I've <em>built</em></h2>
 
-    <!-- National Transfer Network -->
-    <div class="exp-entry">
-      <div>
-        <div class="exp-period">OCT 2025 — PRESENT</div>
-      </div>
-      <div>
-        <h3 class="exp-role">Data Science</h3>
-        <div class="exp-company">National Transfer Network</div>
-        <ul class="exp-bullets">
-          <li>Built a <strong>RAG system</strong> over internal company documents with <strong>Redis caching</strong>, giving users natural-language access to institutional knowledge at <strong>1.7s p95 latency</strong>.</li>
-          <li>Implemented semantic retrieval with <strong>ChromaDB</strong> and an evaluation pipeline to compare embedding models and integrate <strong>DeBERTa-based hallucination detection</strong>, achieving <strong>87% exact match</strong> and <strong>92% F1</strong>.</li>
-        </ul>
-      </div>
-    </div>
-
     <!-- Vertisage Technologies -->
     <div class="exp-entry">
       <div>
@@ -362,13 +347,9 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
         <h3 class="exp-role">Software Engineer</h3>
         <div class="exp-company">Vertisage Technologies</div>
         <ul class="exp-bullets">
-          <li>Developed a financial invoice data extraction pipeline using <strong>LlamaIndex, Pydantic, and AWS Textract OCR</strong> — transforming semi-structured PDFs into schema-validated Parquet tables.</li>
           <li>Led migration of 80+ legacy Redshift MPP stored procedures to Apache Spark (Python) ETL on EMR with Airflow orchestration, cutting annual infrastructure cost by <strong>$1M+</strong> and reducing job runtime by <strong>40%</strong> while maintaining full data correctness.</li>
           <li>Implemented a <strong>Debezium-based Change Data Capture</strong> pipeline writing to Iceberg tables on S3 through Kafka connector, delivering sub-5-minute updates to fraud analytics datasets consumed by the Risk team.</li>
-          <li>Built event-driven monitoring and automated alerting with SNS / SQS / Lambda, reducing MTTD and improving SLA adherence from 95% to <strong>99.5%</strong> for user behavioral telemetry datasets.</li>
-          <li>Integrated <strong>Mixpanel analytics</strong> into the React.js frontend to capture engagement and session flows, enabling the product team to drive data-backed UX improvements.</li>
-          <li>Created internal automation and API services using <strong>Python and Django REST Framework</strong> to support backend operations, reducing manual effort and simplifying cross-team integrations.</li>
-          <li>Built <strong>Spark Scala ETL pipelines</strong> with Airflow ingesting <strong>5+ GB/day</strong> of user-interaction JSON events into S3 from Kinesis, partitioning by date and event type to cut Athena scan volumes and query costs by 40% and drop analyst query latency from minutes to seconds.</li>
+          <li>Owned primary <strong>on-call rotation for 25+ production Spark/Airflow pipelines</strong> serving 4 downstream teams; authored runbooks and automated recurring failure modes to cut repeat incidents by 60% and reduce MTTR from 45 min to 15 min.</li>
         </ul>
       </div>
     </div>
@@ -382,13 +363,10 @@ body.light .cmdk-overlay{background:rgba(0,0,0,.25)}
         <h3 class="exp-role">Software Engineer</h3>
         <div class="exp-company">Tata Consultancy Services</div>
         <ul class="exp-bullets">
-          <li>Built and optimized <strong>Elasticsearch-backed Node.js APIs</strong> supporting 500K+ daily users; tuned queries and caching to deliver <strong>20ms response times</strong> at scale.</li>
-          <li>Developed an extensive library of reusable components shared across projects using <strong>React.js and TypeScript</strong>, reducing code redundancy and improving development speed.</li>
           <li>Optimized Apache Spark (Python) ETL by diagnosing data skew via Spark UI stage metrics and applying salting and broadcast joins — cutting runtime by <strong>40%</strong> and cloud compute cost by 15% across production pipelines.</li>
-          <li>Owned primary <strong>on-call rotation for 25+ production Spark/Airflow pipelines</strong> serving 4 downstream teams; authored runbooks and automated recurring failure modes to cut repeat incidents by 60% and reduce MTTR from 45 min to 15 min.</li>
+          <li>Built <strong>Spark Scala ETL pipelines</strong> with Airflow ingesting <strong>5+ GB/day</strong> of user-interaction JSON events into S3 from Kinesis, partitioning by date and event type to cut Athena scan volumes and query costs by 40% and drop analyst query latency from minutes to seconds.</li>
           <li>Built Apache Spark (Python) ETL pipelines with Airflow ingesting <strong>5+ GB/day</strong> of user-interaction JSON events into S3, partitioning by date and event type — cutting Athena scan volumes and query costs by 40% and dropping analyst query latency from minutes to seconds.</li>
           <li>Designed dimensional data marts using <strong>dbt incremental models and Snowflake clustering strategies</strong>, improving reporting performance and reducing warehouse compute costs by 20%.</li>
-          <li>Delivered secure, compliant APIs with <strong>schema validation and TDD (JUnit, Postman)</strong> in a regulated fintech environment; reduced integration errors by 40% and ensured adherence to cloud security best practices.</li>
         </ul>
       </div>
     </div>
